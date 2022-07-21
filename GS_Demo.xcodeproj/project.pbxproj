@@ -28,6 +28,9 @@
 		EC99784E28892B160035A79E /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC99784D28892B160035A79E /* Reachability.swift */; };
 		EC99785028895A1D0035A79E /* GSApiServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC99784F28895A1D0035A79E /* GSApiServices.swift */; };
 		EC99785228895AA90035A79E /* GSApiServices+Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC99785128895AA90035A79E /* GSApiServices+Constants.swift */; };
+		EC997859288966290035A79E /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC997858288966290035A79E /* CoreDataManager.swift */; };
+		EC99785D2889754B0035A79E /* PictureDetailsManagedModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC99785C2889754B0035A79E /* PictureDetailsManagedModel.swift */; };
+		EC99785F28899F9E0035A79E /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC99785E28899F9E0035A79E /* Extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -73,6 +76,9 @@
 		EC99784D28892B160035A79E /* Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 		EC99784F28895A1D0035A79E /* GSApiServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GSApiServices.swift; sourceTree = "<group>"; };
 		EC99785128895AA90035A79E /* GSApiServices+Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GSApiServices+Constants.swift"; sourceTree = "<group>"; };
+		EC997858288966290035A79E /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
+		EC99785C2889754B0035A79E /* PictureDetailsManagedModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PictureDetailsManagedModel.swift; sourceTree = "<group>"; };
+		EC99785E28899F9E0035A79E /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -183,6 +189,8 @@
 		EC99782D288848290035A79E /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				EC99785B288974EF0035A79E /* PersistenceModel */,
+				EC99785A288974E70035A79E /* DomainModel */,
 				EC99783A28884BFF0035A79E /* PictureDetailsModel.swift */,
 			);
 			path = Model;
@@ -191,6 +199,7 @@
 		EC99782E288848330035A79E /* Services+Manageres */ = {
 			isa = PBXGroup;
 			children = (
+				EC997857288966030035A79E /* DataStore */,
 				EC99783E2888768F0035A79E /* APIServices */,
 			);
 			path = "Services+Manageres";
@@ -206,6 +215,7 @@
 		EC9978302888484D0035A79E /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				EC99785E28899F9E0035A79E /* Extensions.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -257,6 +267,29 @@
 				EC99783F288876B80035A79E /* EndPoitn */,
 			);
 			path = Common;
+			sourceTree = "<group>";
+		};
+		EC997857288966030035A79E /* DataStore */ = {
+			isa = PBXGroup;
+			children = (
+				EC997858288966290035A79E /* CoreDataManager.swift */,
+			);
+			path = DataStore;
+			sourceTree = "<group>";
+		};
+		EC99785A288974E70035A79E /* DomainModel */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = DomainModel;
+			sourceTree = "<group>";
+		};
+		EC99785B288974EF0035A79E /* PersistenceModel */ = {
+			isa = PBXGroup;
+			children = (
+				EC99785C2889754B0035A79E /* PictureDetailsManagedModel.swift */,
+			);
+			path = PersistenceModel;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -393,7 +426,10 @@
 				EC997847288877E00035A79E /* EndPoint+Calls.swift in Sources */,
 				EC997839288849D70035A79E /* BaseViewController.swift in Sources */,
 				EC99783B28884BFF0035A79E /* PictureDetailsModel.swift in Sources */,
+				EC99785D2889754B0035A79E /* PictureDetailsManagedModel.swift in Sources */,
+				EC997859288966290035A79E /* CoreDataManager.swift in Sources */,
 				EC99784C28892A950035A79E /* Networking.swift in Sources */,
+				EC99785F28899F9E0035A79E /* Extensions.swift in Sources */,
 				EC997843288877360035A79E /* EndPoint+Paths.swift in Sources */,
 				EC997841288876D80035A79E /* EndPoint.swift in Sources */,
 				EC99784A28892A870035A79E /* NetworkingConstants.swift in Sources */,

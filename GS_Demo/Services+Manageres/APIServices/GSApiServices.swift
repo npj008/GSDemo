@@ -7,6 +7,8 @@
 
 import Foundation
 
+// MARK: - GSAPIServiceError
+
 public enum GSAPIServiceError: Error {
 
     case network(_: NetworkingError)
@@ -20,29 +22,43 @@ public enum GSAPIServiceError: Error {
 
 }
 
+// MARK: - GSAPIServiceResult
+
 public enum GSAPIServiceResult<T> {
     case success(_: T)
     case failure(_: GSAPIServiceError)
 }
+
+// MARK: - APIService
 
 struct APIService {
     static let baseUrl = URL(string: NetworkingConstants.baseURL)!
     static var shared = GSAPIServices.init(baseUrl: baseUrl)
 }
 
+// MARK: - GSAPIServices
+
 public struct GSAPIServices {
 
     let baseUrl: URL
+    
+    // MARK: - Initialization
 
     public init(baseUrl: URL) {
         self.baseUrl = baseUrl
     }
 
+    /**
+        Fetch APOD for the given date:
+        
+        - Parameter date: Date object for which APOD needs to be fetched
+        - Parameter @escaping completion: Completion handler returning ServiceResult with PictureDetails
+    */
     func fetchAPODDetails(date: String, completion: @escaping (_: GSAPIServiceResult<PictureDetails>) -> Void) {
         let endpoint = Endpoint.fetchAPOD(baseUrl: baseUrl)
         let request = endpoint.createRequest(query: [
             "api_key": NetworkingConstants.apiKey,
-            "date": "2021-07-21"])
+            "date": "2018-07-21"])
         let networking = Networking<PictureDetails>()
         networking.sendRequest(request) { (result) in
             switch result {

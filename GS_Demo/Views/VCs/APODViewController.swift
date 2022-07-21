@@ -21,9 +21,5 @@ class APODViewController: BaseViewController {
                 print(err)
             }
         }
-        
-        ImageManager.shared.downloadImage(with: "https://apod.nasa.gov/apod/image/2207/JupiterRing_WebbSchmidt_2429.jpg", completionHandler: { img, success in
-            print(img)
-        }, placeholderImage: nil)
     }
 }
