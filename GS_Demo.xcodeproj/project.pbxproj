@@ -17,6 +17,17 @@
 		EC997832288848980035A79E /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC997831288848980035A79E /* Router.swift */; };
 		EC997837288849AD0035A79E /* APODViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC997836288849AD0035A79E /* APODViewController.swift */; };
 		EC997839288849D70035A79E /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC997838288849D70035A79E /* BaseViewController.swift */; };
+		EC99783B28884BFF0035A79E /* PictureDetailsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC99783A28884BFF0035A79E /* PictureDetailsModel.swift */; };
+		EC99783D28884C5B0035A79E /* ImageDownloadManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC99783C28884C5B0035A79E /* ImageDownloadManager.swift */; };
+		EC997841288876D80035A79E /* EndPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC997840288876D80035A79E /* EndPoint.swift */; };
+		EC997843288877360035A79E /* EndPoint+Paths.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC997842288877360035A79E /* EndPoint+Paths.swift */; };
+		EC997845288877A00035A79E /* Endpoint+Method.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC997844288877A00035A79E /* Endpoint+Method.swift */; };
+		EC997847288877E00035A79E /* EndPoint+Calls.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC997846288877E00035A79E /* EndPoint+Calls.swift */; };
+		EC99784A28892A870035A79E /* NetworkingConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC99784928892A870035A79E /* NetworkingConstants.swift */; };
+		EC99784C28892A950035A79E /* Networking.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC99784B28892A950035A79E /* Networking.swift */; };
+		EC99784E28892B160035A79E /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC99784D28892B160035A79E /* Reachability.swift */; };
+		EC99785028895A1D0035A79E /* GSApiServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC99784F28895A1D0035A79E /* GSApiServices.swift */; };
+		EC99785228895AA90035A79E /* GSApiServices+Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC99785128895AA90035A79E /* GSApiServices+Constants.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +62,17 @@
 		EC997831288848980035A79E /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		EC997836288849AD0035A79E /* APODViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APODViewController.swift; sourceTree = "<group>"; };
 		EC997838288849D70035A79E /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
+		EC99783A28884BFF0035A79E /* PictureDetailsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PictureDetailsModel.swift; sourceTree = "<group>"; };
+		EC99783C28884C5B0035A79E /* ImageDownloadManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDownloadManager.swift; sourceTree = "<group>"; };
+		EC997840288876D80035A79E /* EndPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndPoint.swift; sourceTree = "<group>"; };
+		EC997842288877360035A79E /* EndPoint+Paths.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EndPoint+Paths.swift"; sourceTree = "<group>"; };
+		EC997844288877A00035A79E /* Endpoint+Method.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Endpoint+Method.swift"; sourceTree = "<group>"; };
+		EC997846288877E00035A79E /* EndPoint+Calls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EndPoint+Calls.swift"; sourceTree = "<group>"; };
+		EC99784928892A870035A79E /* NetworkingConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkingConstants.swift; sourceTree = "<group>"; };
+		EC99784B28892A950035A79E /* Networking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Networking.swift; sourceTree = "<group>"; };
+		EC99784D28892B160035A79E /* Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
+		EC99784F28895A1D0035A79E /* GSApiServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GSApiServices.swift; sourceTree = "<group>"; };
+		EC99785128895AA90035A79E /* GSApiServices+Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GSApiServices+Constants.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -161,6 +183,7 @@
 		EC99782D288848290035A79E /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				EC99783A28884BFF0035A79E /* PictureDetailsModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -168,6 +191,7 @@
 		EC99782E288848330035A79E /* Services+Manageres */ = {
 			isa = PBXGroup;
 			children = (
+				EC99783E2888768F0035A79E /* APIServices */,
 			);
 			path = "Services+Manageres";
 			sourceTree = "<group>";
@@ -192,6 +216,47 @@
 				EC99782A288848090035A79E /* VCs */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		EC99783E2888768F0035A79E /* APIServices */ = {
+			isa = PBXGroup;
+			children = (
+				EC99784F28895A1D0035A79E /* GSApiServices.swift */,
+				EC99785128895AA90035A79E /* GSApiServices+Constants.swift */,
+				EC99783C28884C5B0035A79E /* ImageDownloadManager.swift */,
+				EC99785328895DA90035A79E /* Common */,
+			);
+			path = APIServices;
+			sourceTree = "<group>";
+		};
+		EC99783F288876B80035A79E /* EndPoitn */ = {
+			isa = PBXGroup;
+			children = (
+				EC997840288876D80035A79E /* EndPoint.swift */,
+				EC997842288877360035A79E /* EndPoint+Paths.swift */,
+				EC997844288877A00035A79E /* Endpoint+Method.swift */,
+				EC997846288877E00035A79E /* EndPoint+Calls.swift */,
+			);
+			path = EndPoitn;
+			sourceTree = "<group>";
+		};
+		EC99784828892A700035A79E /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+				EC99784D28892B160035A79E /* Reachability.swift */,
+				EC99784928892A870035A79E /* NetworkingConstants.swift */,
+				EC99784B28892A950035A79E /* Networking.swift */,
+			);
+			path = Networking;
+			sourceTree = "<group>";
+		};
+		EC99785328895DA90035A79E /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				EC99784828892A700035A79E /* Networking */,
+				EC99783F288876B80035A79E /* EndPoitn */,
+			);
+			path = Common;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -324,7 +389,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EC99784E28892B160035A79E /* Reachability.swift in Sources */,
+				EC997847288877E00035A79E /* EndPoint+Calls.swift in Sources */,
 				EC997839288849D70035A79E /* BaseViewController.swift in Sources */,
+				EC99783B28884BFF0035A79E /* PictureDetailsModel.swift in Sources */,
+				EC99784C28892A950035A79E /* Networking.swift in Sources */,
+				EC997843288877360035A79E /* EndPoint+Paths.swift in Sources */,
+				EC997841288876D80035A79E /* EndPoint.swift in Sources */,
+				EC99784A28892A870035A79E /* NetworkingConstants.swift in Sources */,
+				EC99785228895AA90035A79E /* GSApiServices+Constants.swift in Sources */,
+				EC99783D28884C5B0035A79E /* ImageDownloadManager.swift in Sources */,
+				EC99785028895A1D0035A79E /* GSApiServices.swift in Sources */,
+				EC997845288877A00035A79E /* Endpoint+Method.swift in Sources */,
 				EC997832288848980035A79E /* Router.swift in Sources */,
 				EC9977F8288846EE0035A79E /* AppDelegate.swift in Sources */,
 				EC997837288849AD0035A79E /* APODViewController.swift in Sources */,

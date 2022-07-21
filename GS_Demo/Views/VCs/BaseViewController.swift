@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftUI
 
 class BaseViewController: UIViewController {
 
@@ -13,6 +14,7 @@ class BaseViewController: UIViewController {
         super.viewDidLoad()
         self.view.accessibilityIdentifier = String(describing: type(of: self))
         self.view.backgroundColor = UIColor.systemBackground
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
