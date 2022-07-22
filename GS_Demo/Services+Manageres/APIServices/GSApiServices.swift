@@ -36,9 +36,13 @@ struct APIService {
     static var shared = GSAPIServices.init(baseUrl: baseUrl)
 }
 
+protocol GSAPIServiceEntity {
+    func fetchAPODDetails(date: Date, completion: @escaping (_: GSAPIServiceResult<PictureDetails>) -> Void)
+}
+
 // MARK: - GSAPIServices
 
-public struct GSAPIServices {
+public struct GSAPIServices: GSAPIServiceEntity {
 
     let baseUrl: URL
     
@@ -54,7 +58,7 @@ public struct GSAPIServices {
         - Parameter date: Date object for which APOD needs to be fetched
         - Parameter @escaping completion: Completion handler returning ServiceResult with PictureDetails
     */
-    func fetchAPODDetails(date: String, completion: @escaping (_: GSAPIServiceResult<PictureDetails>) -> Void) {
+    func fetchAPODDetails(date: Date, completion: @escaping (_: GSAPIServiceResult<PictureDetails>) -> Void) {
         let endpoint = Endpoint.fetchAPOD(baseUrl: baseUrl)
         let request = endpoint.createRequest(query: [
             "api_key": NetworkingConstants.apiKey,

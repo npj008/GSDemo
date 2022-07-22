@@ -31,6 +31,11 @@
 		EC997859288966290035A79E /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC997858288966290035A79E /* CoreDataManager.swift */; };
 		EC99785D2889754B0035A79E /* PictureDetailsManagedModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC99785C2889754B0035A79E /* PictureDetailsManagedModel.swift */; };
 		EC99785F28899F9E0035A79E /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC99785E28899F9E0035A79E /* Extensions.swift */; };
+		EC997861288AA0970035A79E /* APODViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC997860288AA0970035A79E /* APODViewModel.swift */; };
+		EC997863288AA2920035A79E /* APODCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC997862288AA2920035A79E /* APODCellViewModel.swift */; };
+		EC997866288ADB800035A79E /* APODView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC997865288ADB800035A79E /* APODView.swift */; };
+		EC997868288AE3420035A79E /* DateSelectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC997867288AE3420035A79E /* DateSelectorView.swift */; };
+		EC99786C288B024B0035A79E /* APODCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC99786B288B024B0035A79E /* APODCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -79,6 +84,11 @@
 		EC997858288966290035A79E /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		EC99785C2889754B0035A79E /* PictureDetailsManagedModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PictureDetailsManagedModel.swift; sourceTree = "<group>"; };
 		EC99785E28899F9E0035A79E /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		EC997860288AA0970035A79E /* APODViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APODViewModel.swift; sourceTree = "<group>"; };
+		EC997862288AA2920035A79E /* APODCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APODCellViewModel.swift; sourceTree = "<group>"; };
+		EC997865288ADB800035A79E /* APODView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APODView.swift; sourceTree = "<group>"; };
+		EC997867288AE3420035A79E /* DateSelectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateSelectorView.swift; sourceTree = "<group>"; };
+		EC99786B288B024B0035A79E /* APODCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APODCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -165,7 +175,7 @@
 		EC99782A288848090035A79E /* VCs */ = {
 			isa = PBXGroup;
 			children = (
-				EC997836288849AD0035A79E /* APODViewController.swift */,
+				EC997864288ADB580035A79E /* APOD */,
 				EC997838288849D70035A79E /* BaseViewController.swift */,
 			);
 			path = VCs;
@@ -174,6 +184,8 @@
 		EC99782B2888480F0035A79E /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				EC997860288AA0970035A79E /* APODViewModel.swift */,
+				EC997862288AA2920035A79E /* APODCellViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -290,6 +302,17 @@
 				EC99785C2889754B0035A79E /* PictureDetailsManagedModel.swift */,
 			);
 			path = PersistenceModel;
+			sourceTree = "<group>";
+		};
+		EC997864288ADB580035A79E /* APOD */ = {
+			isa = PBXGroup;
+			children = (
+				EC997836288849AD0035A79E /* APODViewController.swift */,
+				EC997865288ADB800035A79E /* APODView.swift */,
+				EC997867288AE3420035A79E /* DateSelectorView.swift */,
+				EC99786B288B024B0035A79E /* APODCell.swift */,
+			);
+			path = APOD;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -427,11 +450,14 @@
 				EC997839288849D70035A79E /* BaseViewController.swift in Sources */,
 				EC99783B28884BFF0035A79E /* PictureDetailsModel.swift in Sources */,
 				EC99785D2889754B0035A79E /* PictureDetailsManagedModel.swift in Sources */,
+				EC99786C288B024B0035A79E /* APODCell.swift in Sources */,
 				EC997859288966290035A79E /* CoreDataManager.swift in Sources */,
 				EC99784C28892A950035A79E /* Networking.swift in Sources */,
+				EC997868288AE3420035A79E /* DateSelectorView.swift in Sources */,
 				EC99785F28899F9E0035A79E /* Extensions.swift in Sources */,
 				EC997843288877360035A79E /* EndPoint+Paths.swift in Sources */,
 				EC997841288876D80035A79E /* EndPoint.swift in Sources */,
+				EC997861288AA0970035A79E /* APODViewModel.swift in Sources */,
 				EC99784A28892A870035A79E /* NetworkingConstants.swift in Sources */,
 				EC99785228895AA90035A79E /* GSApiServices+Constants.swift in Sources */,
 				EC99783D28884C5B0035A79E /* ImageDownloadManager.swift in Sources */,
@@ -439,6 +465,8 @@
 				EC997845288877A00035A79E /* Endpoint+Method.swift in Sources */,
 				EC997832288848980035A79E /* Router.swift in Sources */,
 				EC9977F8288846EE0035A79E /* AppDelegate.swift in Sources */,
+				EC997866288ADB800035A79E /* APODView.swift in Sources */,
+				EC997863288AA2920035A79E /* APODCellViewModel.swift in Sources */,
 				EC997837288849AD0035A79E /* APODViewController.swift in Sources */,
 				EC997802288846EE0035A79E /* GS_Demo.xcdatamodeld in Sources */,
 			);
