@@ -18,8 +18,8 @@ enum LikeState: Int {
 
 class APODCell: UITableViewCell {
     weak var delegate: FavoritablePictureProtocol?
-    
     var selecteImagethumbnail: UIImage?
+    private var tapGesture = UITapGestureRecognizer()
     
     var photoPostCellViewModel : APODCellViewModel? {
         didSet {
@@ -32,6 +32,8 @@ class APODCell: UITableViewCell {
     private let likeEmptyImage = UIImage(named: "unlike")
     private let loadingImage = UIImage(named: "loading")
     private let placeholder = UIImage(named: "placeholder")
+    private let placeholderVideo = UIImage(named: "placeholderVideo")
+
     
     lazy var likeButton: UIButton = {
         let btn = UIButton()
@@ -49,7 +51,7 @@ class APODCell: UITableViewCell {
         let img = UIImage(systemName: "play")
         btn.setBackgroundImage(img, for: .normal)
         btn.addTarget(self, action: #selector(playVideoTapped), for: .touchUpInside)
-        btn.tintColor = .label
+        btn.tintColor = .white
         btn.isHidden = true
         return btn
     }()
@@ -152,6 +154,12 @@ class APODCell: UITableViewCell {
         let width = UIScreen.main.bounds.width
         imgView.heightAnchor.constraint(equalToConstant: width).isActive = true
         
+        tapGesture = UITapGestureRecognizer(target: self, action: #selector(imageTapped(_:)))
+        tapGesture.numberOfTapsRequired = 1
+        tapGesture.numberOfTouchesRequired = 1
+        imgView.addGestureRecognizer(tapGesture)
+        imgView.isUserInteractionEnabled = false
+        
         imgView.addSubview(alphaView)
         alphaView.leadingAnchor.constraint(equalTo: imgView.leadingAnchor).isActive = true
         alphaView.trailingAnchor.constraint(equalTo: imgView.trailingAnchor).isActive = true
@@ -207,6 +215,14 @@ class APODCell: UITableViewCell {
     }
     
     @objc func playVideoTapped(sender: UIButton) {
+        self.processVideoPlay()
+    }
+    
+    @objc func imageTapped(_ sender: UITapGestureRecognizer) {
+        self.processVideoPlay()
+    }
+    
+    private func processVideoPlay() {
         guard let vm = photoPostCellViewModel, vm.type == .videoCell ,
         let urlString = vm.post.url,
         let videoUrl = URL(string: urlString) else {
@@ -230,14 +246,11 @@ class APODCell: UITableViewCell {
     }
     
     private func setupContent() {
-        photoDate.text = photoPostCellViewModel?.post.date
-        photoExplaination.text = photoPostCellViewModel?.post.explanation
-        photoTitle.text = photoPostCellViewModel?.post.title
-        
-        self.imgView.alpha = 0.2
+        playVideoButton.isHidden = true
+        imgView.isUserInteractionEnabled = false
         if photoPostCellViewModel?.type == .photoCell {
             spinner.startAnimating()
-            playVideoButton.isHidden = true
+            imgView.alpha = 0.2
             photoPostCellViewModel?.fetchCellImage(completion: { [weak self] img, success in
                 DispatchQueue.main.async {
                     self?.imgView.alpha = 1.0
@@ -246,7 +259,8 @@ class APODCell: UITableViewCell {
                 }
             })
         } else {
-            imgView.image = placeholder
+            imgView.isUserInteractionEnabled = true
+            imgView.image = placeholderVideo
             playVideoButton.isHidden = false
         }
         
@@ -255,6 +269,9 @@ class APODCell: UITableViewCell {
         } else {
             self.setButton(isFavorite: false)
         }
+        photoDate.text = photoPostCellViewModel?.post.date
+        photoExplaination.text = photoPostCellViewModel?.post.explanation
+        photoTitle.text = photoPostCellViewModel?.post.title
     }
     
     private func setButton(isFavorite: Bool) {

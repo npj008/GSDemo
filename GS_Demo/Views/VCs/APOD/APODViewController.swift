@@ -92,8 +92,8 @@ class APODViewController: BaseViewController {
         segmentControl.accessibilityIdentifier = Constants.segmentAccessibilityID
         segmentControl.translatesAutoresizingMaskIntoConstraints = false
         segmentControl.topAnchor.constraint(equalTo: lauoutGuide.topAnchor).isActive = true
-        segmentControl.leadingAnchor.constraint(equalTo: lauoutGuide.leadingAnchor).isActive = true
-        segmentControl.trailingAnchor.constraint(equalTo: lauoutGuide.trailingAnchor).isActive = true
+        segmentControl.leadingAnchor.constraint(equalTo: lauoutGuide.leadingAnchor, constant: 10.0).isActive = true
+        segmentControl.trailingAnchor.constraint(equalTo: lauoutGuide.trailingAnchor, constant: -10.0).isActive = true
         segmentControl.heightAnchor.constraint(equalToConstant: 40.0).isActive = true
     }
     
