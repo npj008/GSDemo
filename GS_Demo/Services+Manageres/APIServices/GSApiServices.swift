@@ -62,7 +62,7 @@ public struct GSAPIServices: GSAPIServiceEntity {
         let endpoint = Endpoint.fetchAPOD(baseUrl: baseUrl)
         let request = endpoint.createRequest(query: [
             "api_key": NetworkingConstants.apiKey,
-            "date": "2018-07-21"])
+            "date": date.getDateString() ?? ""])
         let networking = Networking<PictureDetails>()
         networking.sendRequest(request) { (result) in
             switch result {

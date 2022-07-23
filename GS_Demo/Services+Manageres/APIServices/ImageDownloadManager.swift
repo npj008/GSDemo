@@ -16,8 +16,8 @@ final class ImageManager {
 
     private var imagesDownloadTasks: [String: URLSessionDataTask]
     
-    let serialQueueForImages = DispatchQueue(label: "images.queue", attributes: .concurrent)
-    let serialQueueForDataTasks = DispatchQueue(label: "dataTasks.queue", attributes: .concurrent)
+    let concurrentQueueForImages = DispatchQueue(label: "images.queue", attributes: .concurrent)
+    let concurrentQueueForDataTasks = DispatchQueue(label: "dataTasks.queue", attributes: .concurrent)
 
     // MARK: Private init
     private init() {
@@ -43,7 +43,7 @@ final class ImageManager {
         
         let urlRequest = URLRequest(url: url)
         
-        self.serialQueueForImages.sync(flags: .barrier) {
+        self.concurrentQueueForImages.sync(flags: .barrier) {
             if let image = try? self.getImageFromFileStorage(for: urlRequest) {
                 completionHandler(image, true)
                 return
@@ -73,17 +73,17 @@ final class ImageManager {
                 completionHandler(image, false)
             }
             
-            self.serialQueueForImages.sync(flags: .barrier) {
+            self.concurrentQueueForImages.sync(flags: .barrier) {
                 self.saveImage(image: image, urlRequest: urlRequest) { _ in }
             }
             
-            _ = self.serialQueueForDataTasks.sync(flags: .barrier) {
+            _ = self.concurrentQueueForDataTasks.sync(flags: .barrier) {
                 self.imagesDownloadTasks.removeValue(forKey: imageUrlString)
             }
 
         }
         
-        self.serialQueueForDataTasks.sync(flags: .barrier) {
+        self.concurrentQueueForDataTasks.sync(flags: .barrier) {
             imagesDownloadTasks[imageUrlString] = task
         }
         
@@ -91,7 +91,7 @@ final class ImageManager {
     }
 
     private func getExistingDownloadTask(urlString: String) -> URLSessionTask? {
-        serialQueueForDataTasks.sync {
+        concurrentQueueForDataTasks.sync {
             return imagesDownloadTasks[urlString]
         }
     }
@@ -129,5 +129,37 @@ final class ImageManager {
                     completion(nil)
                 }
             }
+    }
+    
+    /**
+   Cleanup local storage after some storage limit or constraint reached
+     
+     - Parameter completion: Closure when clearning is done
+    */
+    func cleanupCache(completion: @escaping (() -> Void)) {
+        let fileManager = FileManager.default
+        let keys: [URLResourceKey] = [.nameKey, .isDirectoryKey]
+        let options: FileManager.DirectoryEnumerationOptions = [.skipsHiddenFiles, .skipsPackageDescendants]
+        guard let documentsUrl = fileManager.urls(for: .documentDirectory, in: .userDomainMask).last,
+              let fileEnumerator = fileManager.enumerator(at: documentsUrl,
+                                                          includingPropertiesForKeys: keys,
+                                                          options: options) else {
+                  completion()
+                  return
+              }
+        
+        let urls: [URL] = fileEnumerator.compactMap { $0 as? URL }
+            .filter { $0.pathExtension == "jpg" ||
+                $0.pathExtension == "jpeg" ||
+                $0.pathExtension == "png"
+            }
+        for url in urls {
+            do {
+                try fileManager.removeItem(at: url)
+            } catch {
+                print(error.localizedDescription)
+            }
+        }
+        completion()
     }
 }

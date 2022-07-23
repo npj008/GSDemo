@@ -8,8 +8,9 @@
 import Foundation
 import UIKit
 
-enum PostType {
-    case photoCell
+enum PostType: String {
+    case photoCell = "image"
+    case videoCell = "video"
     case otherCell
 }
 
@@ -17,7 +18,7 @@ class APODCellViewModel {
     var post: PictureDetails
     
     var type: PostType {
-        return post.mediaType == "image" ? .photoCell : .otherCell
+        return PostType(rawValue: post.mediaType ?? "") ?? .otherCell
     }
     
     init(post: PictureDetails) {

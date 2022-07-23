@@ -18,6 +18,7 @@ class APODViewController: BaseViewController {
     }
     
     private lazy var apodView = APODView(viewModel: self.viewModel)
+    private lazy var lauoutGuide = view.safeAreaLayoutGuide
     
     private var dateViewHeightConstraint: NSLayoutConstraint?
     private var dateViewBottomConstraint: NSLayoutConstraint?
@@ -33,6 +34,7 @@ class APODViewController: BaseViewController {
     lazy var dateSelector: DateSelectorView = {
        let dateSelect = DateSelectorView()
         dateSelect.translatesAutoresizingMaskIntoConstraints = false
+        dateSelect.delegate = self
         return dateSelect
     }()
     
@@ -42,13 +44,14 @@ class APODViewController: BaseViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         title = Constants.title
+        view.backgroundColor = .systemBackground
         setupUI()
         configureViewModel()
         
         let saveButton = UIBarButtonItem(title: Constants.rightNavButtonTitle,
                                          style: .done,
                                          target: self,
-                                         action: #selector(saveResponse))
+                                         action: #selector(resetCache))
         self.navigationItem.rightBarButtonItem  = saveButton
     }
     
@@ -57,6 +60,24 @@ class APODViewController: BaseViewController {
         viewModel.refreshUI = { [weak self] in
             self?.apodView.refreshUI()
         }
+        
+        viewModel.showAlert = { msg in
+            NavigationRouter.shared.presentAlertWithTitle(title: "Alert", message: msg ?? "", onDismiss: nil)
+        }
+        
+        viewModel.toggleLoadingStatus = { [weak self] isLoading, loadingMessage in
+            DispatchQueue.main.async {
+                self?.view.showUniversalLoadingView(isLoading, loadingText: loadingMessage)
+            }
+        }
+        
+        viewModel.resetUI = { [weak self] in
+            DispatchQueue.main.async {
+                self?.viewModel.setCurrentMode(mode: .search(date: nil))
+                self?.dateSelector.resetUI()
+            }
+        }
+        
         viewModel.initialise()
     }
     
@@ -70,9 +91,9 @@ class APODViewController: BaseViewController {
         view.addSubview(segmentControl)
         segmentControl.accessibilityIdentifier = Constants.segmentAccessibilityID
         segmentControl.translatesAutoresizingMaskIntoConstraints = false
-        segmentControl.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-        segmentControl.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-        segmentControl.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        segmentControl.topAnchor.constraint(equalTo: lauoutGuide.topAnchor).isActive = true
+        segmentControl.leadingAnchor.constraint(equalTo: lauoutGuide.leadingAnchor).isActive = true
+        segmentControl.trailingAnchor.constraint(equalTo: lauoutGuide.trailingAnchor).isActive = true
         segmentControl.heightAnchor.constraint(equalToConstant: 40.0).isActive = true
     }
     
@@ -81,8 +102,8 @@ class APODViewController: BaseViewController {
         dateSelector.accessibilityIdentifier = Constants.dateAccessibilityID
         dateSelector.translatesAutoresizingMaskIntoConstraints = false
         dateSelector.topAnchor.constraint(equalTo: segmentControl.bottomAnchor, constant: 10.0).isActive = true
-        dateSelector.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-        dateSelector.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        dateSelector.leadingAnchor.constraint(equalTo: lauoutGuide.leadingAnchor).isActive = true
+        dateSelector.trailingAnchor.constraint(equalTo: lauoutGuide.trailingAnchor).isActive = true
         dateViewHeightConstraint = dateSelector.heightAnchor.constraint(equalToConstant: 50.0)
         dateViewHeightConstraint?.isActive = true
     }
@@ -94,13 +115,18 @@ class APODViewController: BaseViewController {
         apodView.translatesAutoresizingMaskIntoConstraints = false
         dateViewBottomConstraint = apodView.topAnchor.constraint(equalTo: dateSelector.bottomAnchor, constant: 10.0)
         dateViewBottomConstraint?.isActive = true
-        apodView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-        apodView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-        apodView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        apodView.leadingAnchor.constraint(equalTo: lauoutGuide.leadingAnchor, constant: 10.0).isActive = true
+        apodView.bottomAnchor.constraint(equalTo: lauoutGuide.bottomAnchor).isActive = true
+        apodView.trailingAnchor.constraint(equalTo: lauoutGuide.trailingAnchor, constant: -10.0).isActive = true
     }
     
-    @objc func saveResponse(){
-        //
+    @objc func resetCache(){
+        self.view.showUniversalLoadingView(true, loadingText: "Cleaning up storage...")
+        viewModel.cleanupCache { [weak self] in
+            DispatchQueue.main.async {
+                self?.view.showUniversalLoadingView(false)
+            }
+        }
     }
     
     @objc func segmentAction(_ segmentedControl: UISegmentedControl) {
@@ -109,13 +135,21 @@ class APODViewController: BaseViewController {
         case 0:
             dateViewHeightConstraint?.constant = 50.0
             dateViewBottomConstraint?.constant = 10.0
-            break // Uno
+            viewModel.setCurrentMode(mode: .search(date: viewModel.selectedDate))
+            break
         case 1:
             dateViewHeightConstraint?.constant = 0.0
             dateViewBottomConstraint?.constant = 0.0
-            break // Dos
+            viewModel.setCurrentMode(mode: .favorite)
+            break
         default:
             break
         }
+    }
+}
+
+extension APODViewController: DateSelectorViewDelegate {
+    func dateDidSelected(date: Date) {
+        viewModel.setCurrentMode(mode: .search(date: date))
     }
 }

@@ -9,8 +9,14 @@ import UIKit
 
 class APODView: UIView {
     var viewModel: APODViewModelEntity
-    
-    fileprivate let tableview = UITableView()
+        
+    lazy var tableView: UITableView = {
+        let tbl = UITableView()
+        tbl.translatesAutoresizingMaskIntoConstraints = false
+        tbl.bounces = false
+        tbl.showsVerticalScrollIndicator = false
+        return tbl
+    }()
     
     private let photoCellIdentifier = String.init(describing: "PhotoPostTableViewCell")
     
@@ -23,7 +29,8 @@ class APODView: UIView {
     
     func refreshUI() {
         DispatchQueue.main.async {
-            self.tableview.reloadData()
+            self.tableView.scrollsToTop = true
+            self.tableView.reloadData()
         }
     }
     
@@ -32,20 +39,19 @@ class APODView: UIView {
     }
     
     func configureTableView() {
-        addSubview(tableview)
-        tableview.accessibilityIdentifier = "table_picture"
-        tableview.delegate = self
-        tableview.dataSource = self
-        tableview.rowHeight = UITableView.automaticDimension
-        tableview.estimatedRowHeight = 350.0
-        tableview.register(APODCell.self,
+        addSubview(tableView)
+        tableView.accessibilityIdentifier = "table_picture"
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.register(APODCell.self,
                            forCellReuseIdentifier: photoCellIdentifier)
 
-        tableview.translatesAutoresizingMaskIntoConstraints = false
-        tableview.topAnchor.constraint(equalTo: topAnchor).isActive = true
-        tableview.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
-        tableview.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
-        tableview.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.topAnchor.constraint(equalTo: topAnchor).isActive = true
+        tableView.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
+        tableView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
+        tableView.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
     }
 }
 
@@ -60,16 +66,28 @@ extension APODView : UITableViewDataSource,
         let pictureDetails = viewModel.getCellViewModel(at: indexPath)
         
         switch pictureDetails.type {
-        case .photoCell:
+        case .photoCell, .videoCell :
             guard let cell = tableView.dequeueReusableCell(withIdentifier: photoCellIdentifier,
                                                            for: indexPath) as? APODCell else {
                 fatalError("Cell not exists")
             }
             cell.photoPostCellViewModel = pictureDetails
             cell.selectionStyle = .none
+            cell.delegate = self
+            cell.playVideo = { [weak self] videoURL in
+                self?.viewModel.playVideo(url: videoURL)
+            }
             return cell
         default:
             return UITableViewCell()
+        }
+    }
+}
+
+extension APODView: FavoritablePictureProtocol {
+    func toggleFavorite(isFavorite: Bool, postDetail: PictureDetails, completion: @escaping ((Bool) -> Void)) {
+        viewModel.toggleFavorite(isFavorite: isFavorite, postDetail: postDetail) { success in
+            completion(success)
         }
     }
 }

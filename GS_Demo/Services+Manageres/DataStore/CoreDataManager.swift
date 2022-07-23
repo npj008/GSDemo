@@ -10,8 +10,8 @@ import CoreData
 // MARK: - CoreDataManagerEntity
 
 protocol CoreDataManagerEntity {
-    func saveAPODData(postDetail: PictureDetails)
-    func toggleFavorite(isFavorite: Bool, postDetail: PictureDetails)
+    func saveAPODData(postDetail: PictureDetails) -> PictureDetails?
+    func toggleFavorite(isFavorite: Bool, postDetail: PictureDetails, completion: @escaping ((Bool) -> Void))
     func getAllRecentPosts(_ sortedByDate: Bool, sortAscending: Bool) -> [PictureDetails]
     func retriveFavouriteAPOD(_ sortedByDate: Bool,  sortAscending: Bool) -> [PictureDetails]
 }
@@ -80,22 +80,21 @@ final class CoreDataManager: CoreDataManagerEntity {
         
         - Parameter postDetail: Picture to save
     */
-    func saveAPODData(postDetail: PictureDetails) {
+    func saveAPODData(postDetail: PictureDetails) -> PictureDetails? {
         let childContex = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
         childContex.parent = managedObjectContext
-        
+        var curretObject: PictureDetailsManagedObject?
+
         childContex.performAndWait { [weak self] in
             guard !childContex.hasChanges else {
                 try? self?.saveWorkerContex(workerContex: childContex)
                 return
             }
-            
             // Check for update operation
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: CoreDataEntity.postDetails.rawValue)
             let predicate = NSPredicate(format: "title = %@", postDetail.title ?? "")
             fetchRequest.predicate = predicate
             
-            var curretObject: PictureDetailsManagedObject?
             do {
                 if let result = try childContex.fetch(fetchRequest) as? [PictureDetailsManagedObject],
                    let obj = result.first {
@@ -103,16 +102,17 @@ final class CoreDataManager: CoreDataManagerEntity {
                     curretObject?.url = postDetail.url
                     curretObject?.hdurl = postDetail.hdurl
                     curretObject?.explanation = postDetail.explanation
+                    curretObject?.date = postDetail.date?.getDate()
                 } else {
-                    _ = postDetail.toManagedObject(in: childContex)
+                    curretObject = postDetail.toManagedObject(in: childContex)
                 }
-                
+                try self?.saveWorkerContex(workerContex: childContex)
             } catch let fetchError as NSError {
                 print("retrieveById error: \(fetchError.localizedDescription)")
             }
-            
-           try? self?.saveWorkerContex(workerContex: childContex)
         }
+        return curretObject?.toDomainObject()
+        
     }
     
     /**
@@ -122,13 +122,14 @@ final class CoreDataManager: CoreDataManagerEntity {
         - Parameter isFavorite: Bool flag to indicate status of favorite
         - Parameter postDetail: Post to update favorite status
     */
-    func toggleFavorite(isFavorite: Bool, postDetail: PictureDetails) {
+    func toggleFavorite(isFavorite: Bool, postDetail: PictureDetails, completion: @escaping ((Bool) -> Void)) {
         let childContex = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
         childContex.parent = managedObjectContext
         
         childContex.performAndWait { [weak self] in
             guard !childContex.hasChanges else {
                 try? self?.saveWorkerContex(workerContex: childContex)
+                completion(false)
                 return
             }
             
@@ -143,10 +144,12 @@ final class CoreDataManager: CoreDataManagerEntity {
                     obj.isFavorite = isFavorite
                     print(obj)
                 }
+                try self?.saveWorkerContex(workerContex: childContex)
+                completion(true)
             } catch let fetchError as NSError {
                 print("retrieveById error: \(fetchError.localizedDescription)")
+                completion(false)
             }
-           try? self?.saveWorkerContex(workerContex: childContex)
         }
     }
     

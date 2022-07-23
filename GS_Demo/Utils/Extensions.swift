@@ -8,7 +8,7 @@ import Foundation
 import UIKit
 
 extension Date {
-    func getDateString(format: String = "YYYY-MM-DD") -> String? {
+    func getDateString(format: String = "YYYY-MM-dd") -> String? {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = format
         return dateFormatter.string(from: self)
@@ -16,7 +16,7 @@ extension Date {
 }
 
 extension String {
-    func getDate(format: String = "YYYY-MM-DD") -> Date? {
+    func getDate(format: String = "YYYY-MM-dd") -> Date? {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = format
         return dateFormatter.date(from: self)
@@ -56,6 +56,10 @@ extension UITextField {
                                                     height: 216))
         datePicker.datePickerMode = datePickerMode
         datePicker.preferredDatePickerStyle = .inline
+        datePicker.maximumDate = .now
+        if let date = "1995-06-16".getDate() {
+            datePicker.minimumDate = date
+        }
         self.inputView = datePicker
         
         let toolBar = UIToolbar(frame: CGRect(x: 0,

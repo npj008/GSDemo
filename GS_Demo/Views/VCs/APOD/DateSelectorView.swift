@@ -7,7 +7,13 @@
 
 import UIKit
 
+protocol DateSelectorViewDelegate: AnyObject {
+    func dateDidSelected(date: Date)
+}
+
 class DateSelectorView: UIView {
+    
+    weak var delegate: DateSelectorViewDelegate?
     
     lazy var txtField: UITextField = {
         let txt = UITextField()
@@ -27,6 +33,10 @@ class DateSelectorView: UIView {
     
     func setupUI() {
         setupTextField()
+    }
+    
+    func resetUI() {
+        txtField.text = ""
     }
     
     func setupTextField() {
@@ -70,6 +80,7 @@ class DateSelectorView: UIView {
             print(dateString)
             
             txtField.resignFirstResponder()
+            delegate?.dateDidSelected(date: datePickerView.date)
         }
     }
 }

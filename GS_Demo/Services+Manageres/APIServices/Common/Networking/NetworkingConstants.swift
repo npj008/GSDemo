@@ -30,6 +30,8 @@ public enum NetworkingError: Error {
     case custom(String)
     /// Access is not allowed
     case forbidden
+    /// API Limit reached
+    case apiLimitReached
     
     /// Provides interface to check and return `NetworkError` type as per status code.
     /// - Parameter code: the http status code recieved from server.
@@ -41,6 +43,8 @@ public enum NetworkingError: Error {
             return .unauthorized
         case 403:
             return .forbidden
+        case 429:
+            return .apiLimitReached
         case 500...599:
             return .serverError
         case -1009:
@@ -71,6 +75,8 @@ extension NetworkingError: LocalizedError {
             return "403 Forbidden."
         case .jsonParsing(let message):
             return "Unable to parse JSON response: \(message)"
+        case .apiLimitReached:
+            return "API Limit Reached"
         }
     }
 }

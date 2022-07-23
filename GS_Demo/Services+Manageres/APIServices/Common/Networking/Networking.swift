@@ -54,6 +54,7 @@ public class Networking<T: Codable>: NSObject {
                             completion(.failure(.dataReturnedNil(nil)))
                             return
                         }
+                        print("||| response headers \(httpResponse.allHeaderFields)")
                         if let error = NetworkingError.error(forStatusCode: httpResponse.statusCode) {
                             if error == .unauthorized {
                                 NotificationCenter.default.post(name: .networkingUnauthenticatedErrorNotification, object: nil)

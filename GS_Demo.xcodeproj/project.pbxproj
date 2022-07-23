@@ -36,6 +36,7 @@
 		EC997866288ADB800035A79E /* APODView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC997865288ADB800035A79E /* APODView.swift */; };
 		EC997868288AE3420035A79E /* DateSelectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC997867288AE3420035A79E /* DateSelectorView.swift */; };
 		EC99786C288B024B0035A79E /* APODCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC99786B288B024B0035A79E /* APODCell.swift */; };
+		EC99786E288C30F00035A79E /* Loader.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC99786D288C30F00035A79E /* Loader.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -89,6 +90,7 @@
 		EC997865288ADB800035A79E /* APODView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APODView.swift; sourceTree = "<group>"; };
 		EC997867288AE3420035A79E /* DateSelectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateSelectorView.swift; sourceTree = "<group>"; };
 		EC99786B288B024B0035A79E /* APODCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APODCell.swift; sourceTree = "<group>"; };
+		EC99786D288C30F00035A79E /* Loader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Loader.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -220,6 +222,7 @@
 		EC99782F288848480035A79E /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				EC99786D288C30F00035A79E /* Loader.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -464,6 +467,7 @@
 				EC99785028895A1D0035A79E /* GSApiServices.swift in Sources */,
 				EC997845288877A00035A79E /* Endpoint+Method.swift in Sources */,
 				EC997832288848980035A79E /* Router.swift in Sources */,
+				EC99786E288C30F00035A79E /* Loader.swift in Sources */,
 				EC9977F8288846EE0035A79E /* AppDelegate.swift in Sources */,
 				EC997866288ADB800035A79E /* APODView.swift in Sources */,
 				EC997863288AA2920035A79E /* APODCellViewModel.swift in Sources */,

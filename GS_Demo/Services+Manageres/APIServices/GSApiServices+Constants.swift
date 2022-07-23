@@ -9,5 +9,5 @@ import Foundation
 
 struct NetworkingConstants {
     static let baseURL = "https://api.nasa.gov"
-    static let apiKey = "Y6T9cO8qx1ZCJyF8OxHuj0gm0Yi2NEa4TYUqDb3h"
+    static let apiKey = "aUQInrfwyovMi1MvJQkr1ospEe0CAomhw1H4MH3f"
 }

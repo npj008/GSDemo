@@ -23,7 +23,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let vc = APODViewController()
         let mainNav = UINavigationController(rootViewController: vc)
         mainNav.isNavigationBarHidden = false
-        mainNav.navigationBar.isTranslucent = false
+//        mainNav.navigationBar.isTranslucent = false
+        mainNav.navigationBar.backgroundColor = .systemBackground
+        mainNav.navigationBar.barStyle = .default
         NavigationRouter.shared.mainNavigation = mainNav
         NavigationRouter.shared.currentViewController = vc
         window?.rootViewController = mainNav
