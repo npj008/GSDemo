@@ -27,7 +27,7 @@ protocol ViewModelOveservers {
 
 protocol APODViewModelEntity: ViewModelOveservers,
                               FavoritablePictureProtocol {
-    var currentViewMode: PhotoViewMode { get set }
+    var currentPictureQualityMode: PhotoViewMode { get set }
     var totalCells: Int { get }
     var selectedDate: Date? { get }
     var currentMode: APODViewModelStete { get }
@@ -48,12 +48,12 @@ enum APODViewModelStete {
 
 class APODViewModel: APODViewModelEntity {
     
-    var currentViewMode: PhotoViewMode {
+    var currentPictureQualityMode: PhotoViewMode {
         get {
-            return ImageManager.shared.currentViewMode
+            return ImageManager.shared.currentPictureQualityMode
         } set {
             allCellVMs.removeAll()
-            ImageManager.shared.currentViewMode = newValue
+            ImageManager.shared.currentPictureQualityMode = newValue
             refreshData()
         }
     }

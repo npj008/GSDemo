@@ -57,7 +57,7 @@ public enum NetworkingError: Error {
 
 extension NetworkingError: LocalizedError {
     /// :nodoc:
-    public var localizedDescription: String? {
+    public var localizedDesc: String? {
         switch self {
         case .custom(let message):
             return message
@@ -109,7 +109,7 @@ extension NetworkingError: Equatable {
 struct Localized {
 
     static var dataReturnedNil = NSLocalizedString("dataReturnedNil", comment: "Either the response code or the header was missing in the response.")
-    static var noInternetConnectionMessage = NSLocalizedString("noInternetConnectionMessage", comment: "There is no internet connection. Something wrong with the proxy server or the address is incorrect.")
+    static var noInternetConnectionMessage = NSLocalizedString("Internet connetivity seems unreachable. Explore your favorite pictures...", comment: "No Internet Conenction")
     static var serverError = NSLocalizedString("serverError", comment: "An unexpected condition was encountered and no more specific message is suitable.")
     static var unauthorized = NSLocalizedString("unauthorized", comment: "The user does not have valid authentication credentials for the target resource.")
 }

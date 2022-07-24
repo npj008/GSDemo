@@ -101,6 +101,7 @@ class APODCell: UITableViewCell {
         lbl.numberOfLines = 0
         lbl.textAlignment = .center
         lbl.font = .preferredFont(forTextStyle: .title3)
+        lbl.setContentHuggingPriority(.required, for: .vertical)
         lbl.clipsToBounds = true
         return lbl
     }()
@@ -114,7 +115,7 @@ class APODCell: UITableViewCell {
         lbl.numberOfLines = 0
         lbl.text = photoPostCellViewModel?.post.explanation
         lbl.font = .preferredFont(forTextStyle: .body)
-        lbl.setContentCompressionResistancePriority(.required, for: .vertical)
+        lbl.setContentHuggingPriority(.required, for: .vertical)
         lbl.layer.cornerRadius = 5.0
         lbl.clipsToBounds = true
         return lbl
@@ -284,5 +285,11 @@ class APODCell: UITableViewCell {
             likeButton.tag = 200
             likeButton.setImage(GlobalConstants.likeEmptyImage, for: .normal)
         }
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        photoTitle.text = ""
+        photoExplaination.text = ""
     }
 }

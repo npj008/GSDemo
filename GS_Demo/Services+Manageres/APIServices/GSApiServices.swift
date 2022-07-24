@@ -16,7 +16,7 @@ public enum GSAPIServiceError: Error {
     public var localizedDescription: String {
         switch self {
         case .network(let error):
-            return error.localizedDescription
+            return error.localizedDesc ?? error.localizedDescription
         }
     }
 

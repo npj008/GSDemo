@@ -139,11 +139,11 @@ class APODViewController: BaseViewController {
     }
     
     @objc func switchViewMode() {
-        switch viewModel.currentViewMode {
+        switch viewModel.currentPictureQualityMode {
         case .sd:
-            viewModel.currentViewMode = .hd
+            viewModel.currentPictureQualityMode = .hd
         case .hd:
-            viewModel.currentViewMode = .sd
+            viewModel.currentPictureQualityMode = .sd
         }
         viewModeBarButton?.title = getViewModeTitle()
     }
@@ -167,7 +167,7 @@ class APODViewController: BaseViewController {
     }
     
     private func getViewModeTitle() -> String {
-        return viewModel.currentViewMode == .sd ? Constants.switchToHD : Constants.switchToSD
+        return viewModel.currentPictureQualityMode == .sd ? Constants.switchToHD : Constants.switchToSD
     }
 }
 

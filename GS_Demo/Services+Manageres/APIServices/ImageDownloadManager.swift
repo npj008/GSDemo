@@ -14,7 +14,7 @@ final class ImageManager {
 
     static let shared = ImageManager()
     
-    var currentViewMode: PhotoViewMode = .sd
+    var currentPictureQualityMode: PhotoViewMode = .sd
 
     private var imagesDownloadTasks: [String: URLSessionDataTask]
     
