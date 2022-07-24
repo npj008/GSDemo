@@ -178,6 +178,8 @@ class APODViewController: BaseViewController {
         case 1:
             dateViewHeightConstraint?.constant = 0.0
             dateViewBottomConstraint?.constant = 0.0
+            dateSelector.resetUI()
+            viewModel.selectedDate = nil
             viewModel.setCurrentMode(mode: .favorite)
             break
         default:

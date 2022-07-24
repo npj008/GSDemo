@@ -243,6 +243,7 @@ class APODCell: UITableViewCell {
         super.prepareForReuse()
         photoTitle.text = ""
         photoExplaination.text = ""
+        imgView.image = GlobalConstants.placeholderImage
     }
     
     // MARK: - Private Scope
