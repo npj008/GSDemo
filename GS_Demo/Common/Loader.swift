@@ -8,6 +8,8 @@
 import Foundation
 import UIKit
 
+// MARK: - UIView Extension
+
 extension UIView {
     func showUniversalLoadingView(_ show: Bool, loadingText : String = "") {
         DispatchQueue.main.async {
@@ -30,11 +32,10 @@ extension UIView {
         let loadingView = UIView(frame: frame)
         loadingView.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
         let activityIndicator = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
-        //activityIndicator.backgroundColor = UIColor(red:0.16, green:0.17, blue:0.21, alpha:1)
         activityIndicator.layer.cornerRadius = 6
         activityIndicator.center = loadingView.center
         activityIndicator.hidesWhenStopped = true
-        activityIndicator.style = .white
+        activityIndicator.style = UIActivityIndicatorView.Style.medium
         activityIndicator.startAnimating()
         activityIndicator.tag = 100 // 100 for example
         

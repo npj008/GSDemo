@@ -8,6 +8,7 @@
 import Foundation
 import CoreData
 
+// MARK: - ManagedObjectConvertible
 
 /// Protocol to provide functionality for Core Data managed object conversion.
 protocol ManagedObjectConvertible {
@@ -20,6 +21,8 @@ protocol ManagedObjectConvertible {
     func toManagedObject(in context: NSManagedObjectContext) -> ManagedObject?
 }
 
+// MARK: - DomainObjectConvertible
+
 /// Protocol to provide functionality for Domain object conversion from coredata.
 protocol DomainObjectConvertible {
     associatedtype DomainObject
@@ -30,8 +33,9 @@ protocol DomainObjectConvertible {
     func toDomainObject() -> DomainObject
 }
 
+// MARK: - PictureDetailsManagedObject
+
 class PictureDetailsManagedObject: NSManagedObject {
-    
     @NSManaged var date: Date?
     @NSManaged var title: String?
     @NSManaged var explanation: String?

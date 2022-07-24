@@ -7,6 +7,8 @@
 
 import Foundation
 
+// MARK: - Endpoint
+
 struct Endpoint {
         
     static let encoder = JSONEncoder()

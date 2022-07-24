@@ -8,18 +8,25 @@
 import Foundation
 import UIKit
 
+// MARK: - NavigationRouter
+
 final class NavigationRouter {
     
     static let shared = NavigationRouter()
     
     var mainNavigation: UINavigationController?
-    
     var currentViewController: UIViewController?
     
     private init() {
         //
     }
     
+    /**
+   Method to Present Alert on `currentViewController`
+    - Parameter title: Title for Alert view
+    - Parameter message: Alert view message content
+    - Parameter onDismiss: On dismiss completion handler
+    */
     func presentAlertWithTitle(title: String, message : String, onDismiss: (() -> Void)? = nil) {
         DispatchQueue.main.async { [weak self] in
             let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
@@ -36,6 +43,10 @@ final class NavigationRouter {
         }
     }
     
+    /**
+   Method to navigate photo full screen view
+    - Parameter photoDetails: Reference picture details for which Image needs to be shown
+    */
     func navigateToPhotoDetails(photoDetails: PictureDetails) {
         DispatchQueue.main.async { [weak self] in
             let vc = PhotoViewController()
@@ -45,6 +56,9 @@ final class NavigationRouter {
         }
     }
     
+    /**
+   Method to dismiss photo detail view
+    */
     func dismissFromPhotoDetails() {
         DispatchQueue.main.async { [weak self] in
             self?.currentViewController?.addAnimationToNavController(isFromLeft: false)
@@ -52,6 +66,10 @@ final class NavigationRouter {
         }
     }
     
+    /**
+   Method to open URL extenally
+    - Parameter url: URL to open
+    */
     func openURLExternally(url: URL) {
         DispatchQueue.main.async {
             if UIApplication.shared.canOpenURL(url) {

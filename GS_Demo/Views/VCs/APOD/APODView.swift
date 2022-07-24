@@ -7,7 +7,12 @@
 
 import UIKit
 
+// MARK: - APODView
+
 class APODView: UIView {
+    
+    private let photoCellIdentifier = String.init(describing: "PhotoPostTableViewCell")
+
     var viewModel: APODViewModelEntity
         
     lazy var tableView: UITableView = {
@@ -17,8 +22,6 @@ class APODView: UIView {
         tbl.showsVerticalScrollIndicator = false
         return tbl
     }()
-    
-    private let photoCellIdentifier = String.init(describing: "PhotoPostTableViewCell")
     
     init(viewModel: APODViewModelEntity) {
         self.viewModel = viewModel
@@ -46,7 +49,6 @@ class APODView: UIView {
         tableView.rowHeight = UITableView.automaticDimension
         tableView.register(APODCell.self,
                            forCellReuseIdentifier: photoCellIdentifier)
-
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.topAnchor.constraint(equalTo: topAnchor).isActive = true
         tableView.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
@@ -54,6 +56,8 @@ class APODView: UIView {
         tableView.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
     }
 }
+
+// MARK: - APODView + Tableview
 
 extension APODView : UITableViewDataSource,
                      UITableViewDelegate {
@@ -89,6 +93,8 @@ extension APODView : UITableViewDataSource,
         }
     }
 }
+
+// MARK: - APODView + FavoritablePictureProtocol
 
 extension APODView: FavoritablePictureProtocol {
     func toggleFavorite(isFavorite: Bool, postDetail: PictureDetails, completion: @escaping ((Bool) -> Void)) {

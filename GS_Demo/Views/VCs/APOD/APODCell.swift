@@ -7,16 +7,25 @@
 
 import UIKit
 
+// MARK: - FavoritablePictureProtocol
+
 protocol FavoritablePictureProtocol: AnyObject {
     func toggleFavorite(isFavorite: Bool, postDetail: PictureDetails, completion: @escaping ((Bool) -> Void))
 }
+
+// MARK: - LikeState
 
 enum LikeState: Int {
     case liked = 100
     case normal = 200
 }
 
+// MARK: - APODCell
+
 class APODCell: UITableViewCell {
+    
+    // MARK: - Internal Scope
+
     weak var delegate: FavoritablePictureProtocol?
     var selecteImagethumbnail: UIImage?
     private var tapGesture = UITapGestureRecognizer()
@@ -29,6 +38,8 @@ class APODCell: UITableViewCell {
     
     var playVideo: ((URL) -> ())?
     var expandImage: ((PictureDetails) -> ())?
+    
+    // MARK: - UI Element Initialisation
     
     lazy var likeButton: UIButton = {
         let btn = UIButton()
@@ -95,7 +106,7 @@ class APODCell: UITableViewCell {
     lazy var photoTitle: UILabel = {
         let lbl = UILabel()
         lbl.translatesAutoresizingMaskIntoConstraints = false
-        lbl.backgroundColor = .white
+        lbl.backgroundColor = .clear
         lbl.textColor = .label
         lbl.text = photoPostCellViewModel?.post.title
         lbl.numberOfLines = 0
@@ -125,6 +136,7 @@ class APODCell: UITableViewCell {
         let act = UIActivityIndicatorView()
         act.translatesAutoresizingMaskIntoConstraints = false
         act.color = .label
+        act.style = .large
         act.backgroundColor = .systemBackground.withAlphaComponent(0.5)
         return act
     }()
@@ -140,6 +152,8 @@ class APODCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - UI elements Constraints
+    
     func setupUI() {
 
         contentView.addSubview(imgView)
@@ -147,8 +161,6 @@ class APODCell: UITableViewCell {
         imgView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 5.0).isActive = true
         imgView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor).isActive = true
         imgView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor).isActive = true
-        let width = UIScreen.main.bounds.width
-       // imgView.heightAnchor.constraint(equalToConstant: width).isActive = true
         
         tapGesture = UITapGestureRecognizer(target: self, action: #selector(imageTapped(_:)))
         tapGesture.numberOfTapsRequired = 1
@@ -192,6 +204,8 @@ class APODCell: UITableViewCell {
         spinner.centerYAnchor.constraint(equalTo: imgView.centerYAnchor).isActive = true
     }
     
+    // MARK: - UI Action Methods
+    
     @objc func likeTapped(sender: UIButton) {
         guard let vm = photoPostCellViewModel else {
             return
@@ -225,6 +239,14 @@ class APODCell: UITableViewCell {
         }
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        photoTitle.text = ""
+        photoExplaination.text = ""
+    }
+    
+    // MARK: - Private Scope
+
     private func processVideoPlay() {
         guard let vm = photoPostCellViewModel, vm.type == .videoCell ,
         let urlString = vm.post.url,
@@ -285,11 +307,5 @@ class APODCell: UITableViewCell {
             likeButton.tag = 200
             likeButton.setImage(GlobalConstants.likeEmptyImage, for: .normal)
         }
-    }
-    
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        photoTitle.text = ""
-        photoExplaination.text = ""
     }
 }

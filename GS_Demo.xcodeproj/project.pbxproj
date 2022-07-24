@@ -208,8 +208,8 @@
 		EC99782A288848090035A79E /* VCs */ = {
 			isa = PBXGroup;
 			children = (
-				EC665882288D39D1007E9501 /* PhotoViewController */,
 				EC997864288ADB580035A79E /* APOD */,
+				EC665882288D39D1007E9501 /* PhotoViewController */,
 				EC997838288849D70035A79E /* BaseViewController.swift */,
 			);
 			path = VCs;
@@ -218,8 +218,8 @@
 		EC99782B2888480F0035A79E /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
-				EC665888288D3A26007E9501 /* PhotoView */,
 				EC665885288D3A11007E9501 /* APOD */,
+				EC665888288D3A26007E9501 /* PhotoView */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -237,7 +237,6 @@
 			children = (
 				EC99785B288974EF0035A79E /* PersistenceModel */,
 				EC99785A288974E70035A79E /* DomainModel */,
-				EC99783A28884BFF0035A79E /* PictureDetailsModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -328,6 +327,7 @@
 		EC99785A288974E70035A79E /* DomainModel */ = {
 			isa = PBXGroup;
 			children = (
+				EC99783A28884BFF0035A79E /* PictureDetailsModel.swift */,
 			);
 			path = DomainModel;
 			sourceTree = "<group>";

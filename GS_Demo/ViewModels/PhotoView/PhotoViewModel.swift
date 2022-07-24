@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 
+// MARK: - PhotoViewModelEntity
 
 protocol PhotoViewModelEntity {
     var pictureDetails: PictureDetails? { get set }
@@ -18,15 +19,11 @@ protocol PhotoViewModelEntity {
     func closePhotoView()
 }
 
-// MARK: - UserResponseListVM
+// MARK: - PhotoViewModel
 
 class PhotoViewModel: PhotoViewModelEntity {
     
-    private(set) var currentImage = GlobalConstants.placeholderImage {
-        didSet {
-            refreshUI?()
-        }
-    }
+    // MARK: - Internal Scope
     
     var pictureDetails: PictureDetails? {
         didSet {
@@ -34,9 +31,11 @@ class PhotoViewModel: PhotoViewModelEntity {
         }
     }
     
+    /// Observers for data bindings
     var toggleLoadingStatus: ((Bool, String) -> ())?
     var refreshUI: (() -> ())?
     
+    /// Method to load image in full screen view using current picture details
     func loadPhotoView() {
         guard let imgString = pictureDetails?.url else {
             return
@@ -50,7 +49,16 @@ class PhotoViewModel: PhotoViewModelEntity {
         }, placeholderImage: GlobalConstants.placeholderImage)
     }
     
+    /// Method to pop viewcontroller
     func closePhotoView() {
         NavigationRouter.shared.dismissFromPhotoDetails()
+    }
+    
+    // MARK: - Private Scope
+
+    private(set) var currentImage = GlobalConstants.placeholderImage {
+        didSet {
+            refreshUI?()
+        }
     }
 }

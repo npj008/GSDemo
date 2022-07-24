@@ -8,6 +8,8 @@
 import Foundation
 import UIKit
 
+// MARK: - GlobalConstants
+
 struct GlobalConstants {
     static let likeFilledImage = UIImage(named: "like")
     static let likeEmptyImage = UIImage(named: "unlike")

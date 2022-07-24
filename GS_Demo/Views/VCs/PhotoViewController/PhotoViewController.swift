@@ -8,6 +8,8 @@
 import Foundation
 import UIKit
 
+// MARK: - PhotoViewController
+
 class PhotoViewController: BaseViewController {
 
     struct Constants {
@@ -23,6 +25,8 @@ class PhotoViewController: BaseViewController {
             viewModel.pictureDetails = currentPost
         }
     }
+    
+    // MARK: - UI Elemets
     
     lazy var closeButton: UIButton = {
         let btn = UIButton()
@@ -93,6 +97,8 @@ class PhotoViewController: BaseViewController {
         imgView.isUserInteractionEnabled = true
         imgView.addGestureRecognizer(zoomGesture)
     }
+    
+    // MARK: - UI Action Methods
     
     @objc func closeTapped(sender: UIButton) {
         viewModel.closePhotoView()

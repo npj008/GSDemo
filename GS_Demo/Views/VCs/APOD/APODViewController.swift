@@ -7,17 +7,11 @@
 
 import UIKit
 
-class APODViewController: BaseViewController {
+// MARK: - APODViewController
 
-    struct Constants {
-        static let title = "APOD"
-        static let rightNavButtonTitle = "Reset Cache"
-        static let segmentAccessibilityID = "segment"
-        static let dateAccessibilityID = "view_date"
-        static let apodViewAccessibilityID = "view_apod"
-        static let switchToSD = "Switch to SD"
-        static let switchToHD = "Switch to HD"
-    }
+class APODViewController: BaseViewController {
+    
+    // MARK: - Private Scope
     
     private lazy var apodView = APODView(viewModel: self.viewModel)
     private lazy var lauoutGuide = view.safeAreaLayoutGuide
@@ -26,70 +20,6 @@ class APODViewController: BaseViewController {
     private var dateViewBottomConstraint: NSLayoutConstraint?
     
     private var viewModeBarButton: UIBarButtonItem?
-
-    lazy var segmentControl: UISegmentedControl = {
-       let segment = UISegmentedControl(items: ["Search", "Favorite"])
-        segment.translatesAutoresizingMaskIntoConstraints = false
-        segment.addTarget(self, action: #selector(segmentAction(_:)), for: .valueChanged)
-        segment.selectedSegmentIndex = 0
-        return segment
-    }()
-    
-    lazy var dateSelector: DateSelectorView = {
-       let dateSelect = DateSelectorView()
-        dateSelect.translatesAutoresizingMaskIntoConstraints = false
-        dateSelect.delegate = self
-        return dateSelect
-    }()
-    
-    var viewModel: APODViewModelEntity = APODViewModel()
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view.
-        title = Constants.title
-        view.backgroundColor = .systemBackground
-        setupUI()
-        configureViewModel()
-        
-        let saveButton = UIBarButtonItem(title: Constants.rightNavButtonTitle,
-                                         style: .done,
-                                         target: self,
-                                         action: #selector(resetCache))
-        self.navigationItem.rightBarButtonItem  = saveButton
-        
-        viewModeBarButton = UIBarButtonItem(title: getViewModeTitle(),
-                                         style: .done,
-                                         target: self,
-                                         action: #selector(switchViewMode))
-        self.navigationItem.leftBarButtonItem  = viewModeBarButton
-    }
-    
-    func configureViewModel() {
-        apodView.viewModel = viewModel
-        viewModel.refreshUI = { [weak self] in
-            self?.apodView.refreshUI()
-        }
-        
-        viewModel.showAlert = { msg in
-            NavigationRouter.shared.presentAlertWithTitle(title: "Alert", message: msg ?? "", onDismiss: nil)
-        }
-        
-        viewModel.toggleLoadingStatus = { [weak self] isLoading, loadingMessage in
-            DispatchQueue.main.async {
-                self?.view.showUniversalLoadingView(isLoading, loadingText: loadingMessage)
-            }
-        }
-        
-        viewModel.resetUI = { [weak self] in
-            DispatchQueue.main.async {
-                self?.viewModel.setCurrentMode(mode: .search(date: nil))
-                self?.dateSelector.resetUI()
-            }
-        }
-        
-        viewModel.initialise()
-    }
     
     private func setupUI() {
         setupSegment()
@@ -129,6 +59,95 @@ class APODViewController: BaseViewController {
         apodView.trailingAnchor.constraint(equalTo: lauoutGuide.trailingAnchor, constant: -10.0).isActive = true
     }
     
+    private func getViewModeTitle() -> String {
+        return viewModel.currentPictureQualityMode == .sd ? Constants.switchToHD : Constants.switchToSD
+    }
+
+    // MARK: - Internal Scope
+    
+    // MARK: - Constants
+    struct Constants {
+        static let title = "APOD"
+        static let rightNavButtonTitle = "Reset Cache"
+        static let segmentAccessibilityID = "segment"
+        static let dateAccessibilityID = "view_date"
+        static let apodViewAccessibilityID = "view_apod"
+        static let switchToSD = "Switch to SD"
+        static let switchToHD = "Switch to HD"
+    }
+    
+    // MARK: - UI Element Initialisation
+    lazy var segmentControl: UISegmentedControl = {
+       let segment = UISegmentedControl(items: ["Search", "Favorite"])
+        segment.translatesAutoresizingMaskIntoConstraints = false
+        segment.addTarget(self, action: #selector(segmentAction(_:)), for: .valueChanged)
+        segment.selectedSegmentIndex = 0
+        return segment
+    }()
+    
+    lazy var dateSelector: DateSelectorView = {
+       let dateSelect = DateSelectorView()
+        dateSelect.translatesAutoresizingMaskIntoConstraints = false
+        dateSelect.delegate = self
+        return dateSelect
+    }()
+    
+    var viewModel: APODViewModelEntity = APODViewModel()
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        // Do any additional setup after loading the view.
+        title = Constants.title
+        view.backgroundColor = .systemBackground
+        setupUI()
+        configureViewModel()
+        
+        let saveButton = UIBarButtonItem(title: Constants.rightNavButtonTitle,
+                                         style: .done,
+                                         target: self,
+                                         action: #selector(resetCache))
+        saveButton.tintColor = .label
+        self.navigationItem.rightBarButtonItem  = saveButton
+        
+        viewModeBarButton = UIBarButtonItem(title: getViewModeTitle(),
+                                         style: .done,
+                                         target: self,
+                                         action: #selector(switchViewMode))
+        
+        viewModeBarButton?.tintColor = .label
+        self.navigationItem.leftBarButtonItem  = viewModeBarButton
+    }
+    
+    // MARK: - ViewModel Binding
+    
+    func configureViewModel() {
+        apodView.viewModel = viewModel
+        viewModel.refreshUI = { [weak self] in
+            self?.apodView.refreshUI()
+        }
+        
+        viewModel.showAlert = { msg in
+            NavigationRouter.shared.presentAlertWithTitle(title: "Alert", message: msg ?? "", onDismiss: nil)
+        }
+        
+        viewModel.toggleLoadingStatus = { [weak self] isLoading, loadingMessage in
+            DispatchQueue.main.async {
+                self?.view.showUniversalLoadingView(isLoading, loadingText: loadingMessage)
+            }
+        }
+        
+        viewModel.resetUI = { [weak self] in
+            DispatchQueue.main.async {
+                self?.viewModel.setCurrentMode(mode: .search(date: nil))
+                self?.dateSelector.resetUI()
+            }
+        }
+        
+        viewModel.initialise()
+    }
+    
+    // MARK: - UI Action Methods
+    
     @objc func resetCache() {
         self.view.showUniversalLoadingView(true, loadingText: "Cleaning up storage...")
         viewModel.cleanupCache { [weak self] in
@@ -165,11 +184,9 @@ class APODViewController: BaseViewController {
             break
         }
     }
-    
-    private func getViewModeTitle() -> String {
-        return viewModel.currentPictureQualityMode == .sd ? Constants.switchToHD : Constants.switchToSD
-    }
 }
+
+// MARK: - APODViewController + DateSelectorViewDelegate
 
 extension APODViewController: DateSelectorViewDelegate {
     func dateDidSelected(date: Date) {

@@ -7,9 +7,13 @@
 
 import UIKit
 
+// MARK: - DateSelectorViewDelegate
+
 protocol DateSelectorViewDelegate: AnyObject {
     func dateDidSelected(date: Date)
 }
+
+// MARK: - DateSelectorView
 
 class DateSelectorView: UIView {
     

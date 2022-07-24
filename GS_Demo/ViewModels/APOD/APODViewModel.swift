@@ -8,7 +8,8 @@
 import Foundation
 import UIKit
 
-// MARK: - ViewModelOveservers
+// MARK: - PhotoViewMode
+
 enum PhotoViewMode {
     case sd
     case hd
@@ -39,31 +40,26 @@ protocol APODViewModelEntity: ViewModelOveservers,
     func expandImage(postDetails: PictureDetails)
 }
 
+// MARK: - APODViewModelStete
+
 enum APODViewModelStete {
     case favorite
     case search(date: Date?)
 }
 
-// MARK: - UserResponseListVM
+// MARK: - APODViewModel
 
 class APODViewModel: APODViewModelEntity {
     
+    // MARK: - Internal Scope
+    
+    /// Setting this will refresh UI with updated picture quality
     var currentPictureQualityMode: PhotoViewMode {
         get {
             return ImageManager.shared.currentPictureQualityMode
         } set {
             allCellVMs.removeAll()
             ImageManager.shared.currentPictureQualityMode = newValue
-            refreshData()
-        }
-    }
-    
-    func setCurrentMode(mode: APODViewModelStete) {
-        self.currentMode = mode
-    }
-    
-    private(set) var currentMode: APODViewModelStete = .search(date: nil) {
-        didSet {
             refreshData()
         }
     }
@@ -78,6 +74,93 @@ class APODViewModel: APODViewModelEntity {
         return queue
     }()
     
+    var totalCells: Int {
+        return allCellVMs.count
+    }
+    
+    let coreDataManager: CoreDataManagerEntity
+    
+    init(coreDataService: CoreDataManagerEntity = CoreDataManager(modelName: "GS_Demo")) {
+        self.coreDataManager = coreDataService
+    }
+    
+    /// Initiate viewmodel
+    func initialise() {
+        if let url = URL(string: NetworkingConstants.baseURL) {
+            apiService = GSAPIServices(baseUrl: url)
+        }
+        refreshData()
+    }
+    
+    func setCurrentMode(mode: APODViewModelStete) {
+        self.currentMode = mode
+    }
+    
+    func getCellViewModel(at indexPath: IndexPath) -> APODCellViewModel {
+        return allCellVMs[indexPath.row]
+    }
+    
+    func getCellViewModel(title: String) -> APODCellViewModel? {
+        return allCellVMs.first(where: { $0.post.title == title })
+    }
+    
+    /**
+   To update current favorite state of picture details and cache it locally
+    - Parameter isFavorite: Either liked or not
+    - Parameter postDetail: Post for which favorite status needs to be changed
+    - Parameter completion: Completion handler indicating operation is completed.
+    */
+    func toggleFavorite(isFavorite: Bool, postDetail: PictureDetails, completion: @escaping ((Bool) -> Void)) {
+        self.processQueue.async(flags: .barrier) { [weak self] in
+            self?.coreDataManager.toggleFavorite(isFavorite: isFavorite,
+                                           postDetail: postDetail) { success in
+                completion(success)
+                switch self?.currentMode {
+                case .favorite:
+                    self?.refreshData()
+                default:
+                    break
+                }
+            }
+        }
+    }
+    
+    /**
+   Method for open video url in external browser
+    - Parameter url: Video URL
+    */
+    func playVideo(url: URL) {
+        NavigationRouter.shared.openURLExternally(url: url)
+    }
+    
+    /**
+   Method for full screen picture view navigation
+    - Parameter postDetails: Pincture details for which Image needs to display
+    */
+    func expandImage(postDetails: PictureDetails) {
+        NavigationRouter.shared.navigateToPhotoDetails(photoDetails: postDetails)
+    }
+    
+    /**
+   Method to clear local cache data
+    - Parameter completion: Completion handler once cleanup task is done
+    */
+    func cleanupCache(completion: @escaping (() -> Void)) {
+        ImageManager.shared.cleanupCache {
+            completion()
+        }
+    }
+
+    // MARK: - Private Scope
+    
+    /// Holds current mode value
+    private(set) var currentMode: APODViewModelStete = .search(date: nil) {
+        didSet {
+            refreshData()
+        }
+    }
+    
+    /// Setting this string will trigger alert on the UI
     private var alertMessage: String? {
         didSet {
             self.showAlert?(alertMessage)
@@ -90,6 +173,7 @@ class APODViewModel: APODViewModelEntity {
         }
     }
     
+    /// Setting this cell VMs will refresh main UI
     private(set) var allCellVMs: [APODCellViewModel] = [APODCellViewModel]() {
         didSet {
             self.refreshUI?()
@@ -97,31 +181,10 @@ class APODViewModel: APODViewModelEntity {
         }
     }
     
-    var totalCells: Int {
-        return allCellVMs.count
-    }
-    
     private(set) var selectedDate: Date?
-
     private(set) var apiService: GSAPIServiceEntity?
-    
-    // MARK: - Static Scope
 
-    // MARK: - Internal Scope
-
-    let coreDataManager: CoreDataManagerEntity
-    
-    init(coreDataService: CoreDataManagerEntity = CoreDataManager(modelName: "GS_Demo")) {
-        self.coreDataManager = coreDataService
-    }
-    
-    func initialise() {
-        if let url = URL(string: NetworkingConstants.baseURL) {
-            apiService = GSAPIServices(baseUrl: url)
-        }
-        refreshData()
-    }
-    
+    /// Refresh data based on current mode (search / favorite)
     private func refreshData() {
         switch currentMode {
         case .favorite:
@@ -136,7 +199,7 @@ class APODViewModel: APODViewModelEntity {
         }
     }
     
-    
+    /// Method to fetch individual picture detail from API
     private func fetchPictureData() {
         guard let date = selectedDate else {
                 allCellVMs.removeAll()
@@ -157,14 +220,14 @@ class APODViewModel: APODViewModelEntity {
         })
     }
     
-    func getCellViewModel(at indexPath: IndexPath) -> APODCellViewModel {
-        return allCellVMs[indexPath.row]
+    private func processPost(post: PictureDetails) {
+        self.processQueue.async(flags: .barrier) { [weak self] in
+            let object = self?.coreDataManager.saveAPODData(postDetail: post) ?? post
+            self?.allCellVMs = [APODCellViewModel(post: object)]
+        }
     }
     
-    func getCellViewModel(title: String) -> APODCellViewModel? {
-        return allCellVMs.first(where: { $0.post.title == title })
-    }
-    
+    /// Method to fetch favorite pictures from local storage
     private func fetchFavoritePictures() {
         allCellVMs.removeAll()
         self.isLoading = true
@@ -178,41 +241,5 @@ class APODViewModel: APODViewModelEntity {
         
         allCellVMs = vms
         isLoading = false
-    }
-    
-    func toggleFavorite(isFavorite: Bool, postDetail: PictureDetails, completion: @escaping ((Bool) -> Void)) {
-        self.processQueue.async(flags: .barrier) { [weak self] in
-            self?.coreDataManager.toggleFavorite(isFavorite: isFavorite,
-                                           postDetail: postDetail) { success in
-                completion(success)
-                switch self?.currentMode {
-                case .favorite:
-                    self?.refreshData()
-                default:
-                    break
-                }
-            }
-        }
-    }
-    
-    func playVideo(url: URL) {
-        NavigationRouter.shared.openURLExternally(url: url)
-    }
-    
-    func expandImage(postDetails: PictureDetails) {
-        NavigationRouter.shared.navigateToPhotoDetails(photoDetails: postDetails)
-    }
-    
-    private func processPost(post: PictureDetails) {
-        self.processQueue.async(flags: .barrier) { [weak self] in
-            let object = self?.coreDataManager.saveAPODData(postDetail: post) ?? post
-            self?.allCellVMs = [APODCellViewModel(post: object)]
-        }
-    }
-    
-    func cleanupCache(completion: @escaping (() -> Void)) {
-        ImageManager.shared.cleanupCache {
-            completion()
-        }
     }
 }

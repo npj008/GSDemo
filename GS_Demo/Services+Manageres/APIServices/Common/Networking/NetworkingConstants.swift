@@ -7,10 +7,14 @@
 
 import Foundation
 
+// MARK: - NetworkingResult
+
 public enum NetworkingResult<T> {
     case success(T)
     case failure(NetworkingError)
 }
+
+// MARK: - NetworkingError
 
 /// Representation of the type of networking error.
 public enum NetworkingError: Error {
@@ -56,7 +60,6 @@ public enum NetworkingError: Error {
 }
 
 extension NetworkingError: LocalizedError {
-    /// :nodoc:
     public var localizedDesc: String? {
         switch self {
         case .custom(let message):
@@ -82,7 +85,6 @@ extension NetworkingError: LocalizedError {
 }
 
 extension NetworkingError: Equatable {
-    /// Check if 2 `NetworkingError`s are the same
     public static func == (lhs: NetworkingError, rhs: NetworkingError) -> Bool {
         switch (lhs, rhs) {
         case (.custom(let lhsMessage), .custom(let rhsMessage)):
@@ -106,13 +108,16 @@ extension NetworkingError: Equatable {
     }
 }
 
-struct Localized {
+// MARK: - Localized
 
+struct Localized {
     static var dataReturnedNil = NSLocalizedString("dataReturnedNil", comment: "Either the response code or the header was missing in the response.")
     static var noInternetConnectionMessage = NSLocalizedString("Internet connetivity seems unreachable. Explore your favorite pictures...", comment: "No Internet Conenction")
     static var serverError = NSLocalizedString("serverError", comment: "An unexpected condition was encountered and no more specific message is suitable.")
     static var unauthorized = NSLocalizedString("unauthorized", comment: "The user does not have valid authentication credentials for the target resource.")
 }
+
+// MARK: - NetworkingState
 
 /// The connections state for the client
 public enum NetworkingState {
@@ -125,6 +130,8 @@ public enum NetworkingState {
     /// 500 status codes
     case serverError
 }
+
+// MARK: - NetworkingState
 
 extension Notification.Name {
     static let networkingUnauthenticatedErrorNotification = Notification.Name("gs-NetworkingUnauthenticatedErrorNotification")

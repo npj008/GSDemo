@@ -7,6 +7,8 @@
 import Foundation
 import UIKit
 
+// MARK: - Date Extension
+
 extension Date {
     func getDateString(format: String = "YYYY-MM-dd") -> String? {
         let dateFormatter = DateFormatter()
@@ -15,6 +17,8 @@ extension Date {
     }
 }
 
+// MARK: - String Extension
+
 extension String {
     func getDate(format: String = "YYYY-MM-dd") -> Date? {
         let dateFormatter = DateFormatter()
@@ -22,6 +26,8 @@ extension String {
         return dateFormatter.date(from: self)
     }
 }
+
+// MARK: - UITextField Extension
 
 extension UITextField {
     func datePicker<T>(target: T,
@@ -46,6 +52,7 @@ extension UITextField {
             let barButtonItem = UIBarButtonItem(barButtonSystemItem: style,
                                                 target: buttonTarget,
                                                 action: action)
+            barButtonItem.tintColor = .label
             
             return barButtonItem
         }
@@ -70,6 +77,7 @@ extension UITextField {
                           buttonItem(withSystemItemStyle: .flexibleSpace),
                           buttonItem(withSystemItemStyle: .done)],
                          animated: true)
+        toolBar.tintColor = .systemBackground
         self.inputAccessoryView = toolBar
     }
     
@@ -85,6 +93,8 @@ extension UITextField {
         self.rightViewMode = .always
     }
 }
+
+// MARK: - UIViewController Extension
 
 extension UIViewController {
 

@@ -9,7 +9,9 @@ import Foundation
 
 struct Empty: Codable {}
 
-public enum NetworkingQueueType {
+// MARK: - NetworkingQueueType
+
+enum NetworkingQueueType {
     case serial
     case concurrent
 }
@@ -17,7 +19,11 @@ public enum NetworkingQueueType {
 let serialNetworkingQueue = DispatchQueue(label: "gsDemotask.networking.requests.serial.queue")
 let concurrentNetworkingQueue = DispatchQueue(label: "gsDemotask.networking.requests.concurrent.queue", qos: .background, attributes: .concurrent)
 
-public class Networking<T: Codable>: NSObject {
+// MARK: - Networking
+
+class Networking<T: Codable>: NSObject {
+    
+    // MARK: - Internal Scope
 
     let configuration: URLSessionConfiguration?
 
@@ -82,6 +88,8 @@ public class Networking<T: Codable>: NSObject {
             }
         }
     }
+    
+    // MARK: - Private Scope
 
     private func decodeResponse<T: Codable>(data responseData: Data?, response: URLResponse?, error: Error?) -> NetworkingResult<T> {
         if T.self == Empty.self {

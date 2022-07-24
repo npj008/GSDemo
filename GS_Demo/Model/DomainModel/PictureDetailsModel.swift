@@ -8,6 +8,12 @@
 import Foundation
 import CoreData
 
+// MARK: - CoreDataEntity
+
+enum CoreDataEntity: String {
+    case postDetails = "PostDetails"
+}
+
 // MARK: - PictureDetails
 
 struct PictureDetails: Codable {
@@ -30,6 +36,10 @@ struct PictureDetails: Codable {
 }
 
 extension PictureDetails: ManagedObjectConvertible {
+    /**
+   Method to convert picture detail instance to managed object for core data.
+    - Parameter context: Core data context
+    */
     func toManagedObject(in context: NSManagedObjectContext) -> PictureDetailsManagedObject? {
         guard let entityDescription = NSEntityDescription.entity(forEntityName: CoreDataEntity.postDetails.rawValue, in: context) else {
                   return nil
@@ -45,8 +55,4 @@ extension PictureDetails: ManagedObjectConvertible {
         object.isFavorite = isFavorite
         return object
     }
-}
-
-enum CoreDataEntity: String {
-    case postDetails = "PostDetails"
 }
