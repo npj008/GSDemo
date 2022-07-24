@@ -13,6 +13,8 @@ import UIKit
 final class ImageManager {
 
     static let shared = ImageManager()
+    
+    var currentViewMode: PhotoViewMode = .sd
 
     private var imagesDownloadTasks: [String: URLSessionDataTask]
     

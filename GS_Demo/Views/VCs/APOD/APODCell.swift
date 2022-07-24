@@ -55,7 +55,8 @@ class APODCell: UITableViewCell {
         let imgView = UIImageView()
         imgView.translatesAutoresizingMaskIntoConstraints = false
         imgView.image = GlobalConstants.placeholderImage
-        imgView.contentMode = .scaleAspectFill
+        imgView.contentMode = .scaleToFill
+        imgView.setContentHuggingPriority(.required, for: .vertical)
         return imgView
     }()
     
@@ -100,7 +101,6 @@ class APODCell: UITableViewCell {
         lbl.numberOfLines = 0
         lbl.textAlignment = .center
         lbl.font = .preferredFont(forTextStyle: .title3)
-        lbl.heightAnchor.constraint(greaterThanOrEqualToConstant: 30.0).isActive = true
         lbl.clipsToBounds = true
         return lbl
     }()
@@ -147,7 +147,7 @@ class APODCell: UITableViewCell {
         imgView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor).isActive = true
         imgView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor).isActive = true
         let width = UIScreen.main.bounds.width
-        imgView.heightAnchor.constraint(equalToConstant: width).isActive = true
+       // imgView.heightAnchor.constraint(equalToConstant: width).isActive = true
         
         tapGesture = UITapGestureRecognizer(target: self, action: #selector(imageTapped(_:)))
         tapGesture.numberOfTapsRequired = 1
@@ -272,6 +272,7 @@ class APODCell: UITableViewCell {
         photoDate.text = photoPostCellViewModel?.post.date
         photoExplaination.text = photoPostCellViewModel?.post.explanation
         photoTitle.text = photoPostCellViewModel?.post.title
+        layoutIfNeeded()
     }
     
     private func setButton(isFavorite: Bool) {

@@ -9,6 +9,12 @@ import Foundation
 import UIKit
 
 // MARK: - ViewModelOveservers
+enum PhotoViewMode {
+    case sd
+    case hd
+}
+
+// MARK: - ViewModelOveservers
 
 protocol ViewModelOveservers {
     var toggleLoadingStatus: ((Bool, String) -> ())? { get set}
@@ -21,6 +27,7 @@ protocol ViewModelOveservers {
 
 protocol APODViewModelEntity: ViewModelOveservers,
                               FavoritablePictureProtocol {
+    var currentViewMode: PhotoViewMode { get set }
     var totalCells: Int { get }
     var selectedDate: Date? { get }
     var currentMode: APODViewModelStete { get }
@@ -40,6 +47,16 @@ enum APODViewModelStete {
 // MARK: - UserResponseListVM
 
 class APODViewModel: APODViewModelEntity {
+    
+    var currentViewMode: PhotoViewMode {
+        get {
+            return ImageManager.shared.currentViewMode
+        } set {
+            allCellVMs.removeAll()
+            ImageManager.shared.currentViewMode = newValue
+            refreshData()
+        }
+    }
     
     func setCurrentMode(mode: APODViewModelStete) {
         self.currentMode = mode
@@ -116,7 +133,6 @@ class APODViewModel: APODViewModelEntity {
                 self?.selectedDate = date
                 self?.fetchPictureData()
             }
-
         }
     }
     
@@ -150,6 +166,7 @@ class APODViewModel: APODViewModelEntity {
     }
     
     private func fetchFavoritePictures() {
+        allCellVMs.removeAll()
         self.isLoading = true
         let pictures = coreDataManager.retriveFavouriteAPOD(true, sortAscending: false)
         var vms = [APODCellViewModel]()
@@ -168,6 +185,12 @@ class APODViewModel: APODViewModelEntity {
             self?.coreDataManager.toggleFavorite(isFavorite: isFavorite,
                                            postDetail: postDetail) { success in
                 completion(success)
+                switch self?.currentMode {
+                case .favorite:
+                    self?.refreshData()
+                default:
+                    break
+                }
             }
         }
     }

@@ -15,6 +15,8 @@ class APODViewController: BaseViewController {
         static let segmentAccessibilityID = "segment"
         static let dateAccessibilityID = "view_date"
         static let apodViewAccessibilityID = "view_apod"
+        static let switchToSD = "Switch to SD"
+        static let switchToHD = "Switch to HD"
     }
     
     private lazy var apodView = APODView(viewModel: self.viewModel)
@@ -22,6 +24,8 @@ class APODViewController: BaseViewController {
     
     private var dateViewHeightConstraint: NSLayoutConstraint?
     private var dateViewBottomConstraint: NSLayoutConstraint?
+    
+    private var viewModeBarButton: UIBarButtonItem?
 
     lazy var segmentControl: UISegmentedControl = {
        let segment = UISegmentedControl(items: ["Search", "Favorite"])
@@ -53,6 +57,12 @@ class APODViewController: BaseViewController {
                                          target: self,
                                          action: #selector(resetCache))
         self.navigationItem.rightBarButtonItem  = saveButton
+        
+        viewModeBarButton = UIBarButtonItem(title: getViewModeTitle(),
+                                         style: .done,
+                                         target: self,
+                                         action: #selector(switchViewMode))
+        self.navigationItem.leftBarButtonItem  = viewModeBarButton
     }
     
     func configureViewModel() {
@@ -109,7 +119,6 @@ class APODViewController: BaseViewController {
     }
     
     private func setupAPODView() {
-//        apodView = APODView(viewModel: viewModel)
         view.addSubview(apodView)
         apodView.accessibilityIdentifier = Constants.apodViewAccessibilityID
         apodView.translatesAutoresizingMaskIntoConstraints = false
@@ -120,13 +129,23 @@ class APODViewController: BaseViewController {
         apodView.trailingAnchor.constraint(equalTo: lauoutGuide.trailingAnchor, constant: -10.0).isActive = true
     }
     
-    @objc func resetCache(){
+    @objc func resetCache() {
         self.view.showUniversalLoadingView(true, loadingText: "Cleaning up storage...")
         viewModel.cleanupCache { [weak self] in
             DispatchQueue.main.async {
                 self?.view.showUniversalLoadingView(false)
             }
         }
+    }
+    
+    @objc func switchViewMode() {
+        switch viewModel.currentViewMode {
+        case .sd:
+            viewModel.currentViewMode = .hd
+        case .hd:
+            viewModel.currentViewMode = .sd
+        }
+        viewModeBarButton?.title = getViewModeTitle()
     }
     
     @objc func segmentAction(_ segmentedControl: UISegmentedControl) {
@@ -145,6 +164,10 @@ class APODViewController: BaseViewController {
         default:
             break
         }
+    }
+    
+    private func getViewModeTitle() -> String {
+        return viewModel.currentViewMode == .sd ? Constants.switchToHD : Constants.switchToSD
     }
 }
 
