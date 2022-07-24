@@ -51,6 +51,9 @@ final class ImageManager {
        
        let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
            guard let data = data else {
+               DispatchQueue.main.async {
+                   completionHandler(placeholderImage, true)
+               }
                return
            }
            if let _ = error {

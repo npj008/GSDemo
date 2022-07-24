@@ -11,6 +11,8 @@
 		EC665887288D3A22007E9501 /* PhotoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC665886288D3A22007E9501 /* PhotoViewModel.swift */; };
 		EC66588A288D3D34007E9501 /* GlobantConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC665889288D3D34007E9501 /* GlobantConstants.swift */; };
 		EC66588E288DA46F007E9501 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = EC66588D288DA46F007E9501 /* README.md */; };
+		EC665890288DA557007E9501 /* APODViewModelTestCases.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC66588F288DA557007E9501 /* APODViewModelTestCases.swift */; };
+		EC665892288DB2C0007E9501 /* LoadPhotoVMTestCases.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC665891288DB2C0007E9501 /* LoadPhotoVMTestCases.swift */; };
 		EC9977F8288846EE0035A79E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC9977F7288846EE0035A79E /* AppDelegate.swift */; };
 		EC997802288846EE0035A79E /* GS_Demo.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = EC997800288846EE0035A79E /* GS_Demo.xcdatamodeld */; };
 		EC997804288846EF0035A79E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EC997803288846EF0035A79E /* Assets.xcassets */; };
@@ -65,6 +67,8 @@
 		EC665886288D3A22007E9501 /* PhotoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoViewModel.swift; sourceTree = "<group>"; };
 		EC665889288D3D34007E9501 /* GlobantConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobantConstants.swift; sourceTree = "<group>"; };
 		EC66588D288DA46F007E9501 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		EC66588F288DA557007E9501 /* APODViewModelTestCases.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APODViewModelTestCases.swift; sourceTree = "<group>"; };
+		EC665891288DB2C0007E9501 /* LoadPhotoVMTestCases.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadPhotoVMTestCases.swift; sourceTree = "<group>"; };
 		EC9977F4288846EE0035A79E /* GS_Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GS_Demo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EC9977F7288846EE0035A79E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		EC997801288846EE0035A79E /* GS_Demo.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = GS_Demo.xcdatamodel; sourceTree = "<group>"; };
@@ -154,10 +158,10 @@
 		EC9977EB288846EE0035A79E = {
 			isa = PBXGroup;
 			children = (
-				EC66588D288DA46F007E9501 /* README.md */,
 				EC9977F6288846EE0035A79E /* GS_Demo */,
 				EC997810288846F00035A79E /* GS_DemoTests */,
 				EC99781A288846F00035A79E /* GS_DemoUITests */,
+				EC66588D288DA46F007E9501 /* README.md */,
 				EC9977F5288846EE0035A79E /* Products */,
 			);
 			sourceTree = "<group>";
@@ -195,6 +199,8 @@
 			isa = PBXGroup;
 			children = (
 				EC997811288846F00035A79E /* GS_DemoTests.swift */,
+				EC66588F288DA557007E9501 /* APODViewModelTestCases.swift */,
+				EC665891288DB2C0007E9501 /* LoadPhotoVMTestCases.swift */,
 			);
 			path = GS_DemoTests;
 			sourceTree = "<group>";
@@ -520,6 +526,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EC665890288DA557007E9501 /* APODViewModelTestCases.swift in Sources */,
+				EC665892288DB2C0007E9501 /* LoadPhotoVMTestCases.swift in Sources */,
 				EC997812288846F00035A79E /* GS_DemoTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -80,13 +80,15 @@ class APODViewModel: APODViewModelEntity {
     
     let coreDataManager: CoreDataManagerEntity
     
-    init(coreDataService: CoreDataManagerEntity = CoreDataManager(modelName: "GS_Demo")) {
+    init(coreDataService: CoreDataManagerEntity = CoreDataManager(modelName: "GS_Demo"),
+         apiService: GSAPIServiceEntity? = nil) {
         self.coreDataManager = coreDataService
+        self.apiService = apiService
     }
     
     /// Initiate viewmodel
     func initialise() {
-        if let url = URL(string: NetworkingConstants.baseURL) {
+        if let url = URL(string: NetworkingConstants.baseURL), apiService == nil {
             apiService = GSAPIServices(baseUrl: url)
         }
         refreshData()
