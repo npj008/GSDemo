@@ -16,6 +16,7 @@ class PhotoViewController: BaseViewController {
     
     private lazy var lauoutGuide = view.safeAreaLayoutGuide
     var viewModel: PhotoViewModelEntity = PhotoViewModel()
+    lazy var zoomGesture = UIPinchGestureRecognizer(target: self, action: #selector(zoomImage(sender:)))
     
     var currentPost: PictureDetails? {
         didSet {
@@ -89,6 +90,8 @@ class PhotoViewController: BaseViewController {
         imgView.leadingAnchor.constraint(equalTo: lauoutGuide.leadingAnchor, constant: 10.0).isActive = true
         imgView.trailingAnchor.constraint(equalTo: lauoutGuide.trailingAnchor, constant: -10.0).isActive = true
         imgView.bottomAnchor.constraint(equalTo: lauoutGuide.bottomAnchor).isActive = true
+        imgView.isUserInteractionEnabled = true
+        imgView.addGestureRecognizer(zoomGesture)
     }
     
     @objc func closeTapped(sender: UIButton) {
@@ -99,4 +102,14 @@ class PhotoViewController: BaseViewController {
         viewModel.closePhotoView()
     }
     
+    @objc func zoomImage(sender: UIPinchGestureRecognizer) {
+        guard sender.view != nil else { return }
+        
+        if let scale = (sender.view?.transform.scaledBy(x: sender.scale, y: sender.scale)) {
+            guard scale.a > 1.0 else { return }
+            guard scale.d > 1.0 else { return }
+            sender.view?.transform = scale
+            sender.scale = 1.0
+        }
+    }
 }
