@@ -30,7 +30,7 @@ protocol APODViewModelEntity: ViewModelOveservers,
                               FavoritablePictureProtocol {
     var currentPictureQualityMode: PhotoViewMode { get set }
     var totalCells: Int { get }
-    var selectedDate: Date? { get set }
+    var selectedDate: Date? { get }
     var currentMode: APODViewModelStete { get }
     func getCellViewModel(at indexPath: IndexPath) -> APODCellViewModel
     func initialise()
@@ -183,7 +183,7 @@ class APODViewModel: APODViewModelEntity {
         }
     }
     
-    var selectedDate: Date?
+    private(set) var selectedDate: Date?
     private(set) var apiService: GSAPIServiceEntity?
 
     /// Refresh data based on current mode (search / favorite)

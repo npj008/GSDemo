@@ -29,7 +29,6 @@ final class ImageManager {
    func downloadImage(with imageUrlString: String?,
                       completionHandler: @escaping (UIImage?, Bool) -> Void,
                       placeholderImage: UIImage?) {
-       
        guard let imageUrlString = imageUrlString,
              let url = URL(string: imageUrlString) else {
                  completionHandler(placeholderImage, true)
@@ -37,52 +36,57 @@ final class ImageManager {
              }
        
        let urlRequest = URLRequest(url: url)
-       
+
+       var isLoadedFromCache = false
        self.concurrentQueueForImages.sync(flags: .barrier) {
            if let image = try? self.getImageFromFileStorage(for: urlRequest) {
+               isLoadedFromCache = true
                completionHandler(image, true)
                return
            }
        }
-       
-       if getExistingDownloadTask(urlString: imageUrlString) != nil {
-           return
-       }
-       
-       let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
-           guard let data = data else {
-               DispatchQueue.main.async {
-                   completionHandler(placeholderImage, true)
-               }
-               return
-           }
-           if let _ = error {
-               DispatchQueue.main.async {
-                   completionHandler(placeholderImage, true)
-               }
-               return
-           }
+              
+       if !isLoadedFromCache {
            
-           let image = UIImage(data: data)
+           if getExistingDownloadTask(urlString: imageUrlString) != nil {
+               return
+           }
+                      
+           let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
+               guard let data = data else {
+                   DispatchQueue.main.async {
+                       completionHandler(placeholderImage, true)
+                   }
+                   return
+               }
+               if let _ = error {
+                   DispatchQueue.main.async {
+                       completionHandler(placeholderImage, true)
+                   }
+                   return
+               }
+               
+               let image = UIImage(data: data)
 
-           DispatchQueue.main.async {
-               completionHandler(image, false)
+               DispatchQueue.main.async {
+                   completionHandler(image, false)
+               }
+               
+               self.concurrentQueueForImages.sync(flags: .barrier) {
+                   self.saveImage(image: image, urlRequest: urlRequest) { _ in }
+               }
+               
+               _ = self.concurrentQueueForDataTasks.sync(flags: .barrier) {
+                   self.imagesDownloadTasks.removeValue(forKey: imageUrlString)
+               }
            }
            
-           self.concurrentQueueForImages.sync(flags: .barrier) {
-               self.saveImage(image: image, urlRequest: urlRequest) { _ in }
+           self.concurrentQueueForDataTasks.sync(flags: .barrier) {
+               imagesDownloadTasks[imageUrlString] = task
            }
            
-           _ = self.concurrentQueueForDataTasks.sync(flags: .barrier) {
-               self.imagesDownloadTasks.removeValue(forKey: imageUrlString)
-           }
+           task.resume()
        }
-       
-       self.concurrentQueueForDataTasks.sync(flags: .barrier) {
-           imagesDownloadTasks[imageUrlString] = task
-       }
-       
-       task.resume()
    }
     
     /**
