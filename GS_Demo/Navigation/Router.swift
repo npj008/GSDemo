@@ -36,6 +36,22 @@ final class NavigationRouter {
         }
     }
     
+    func navigateToPhotoDetails(photoDetails: PictureDetails) {
+        DispatchQueue.main.async { [weak self] in
+            let vc = PhotoViewController()
+            vc.currentPost = photoDetails
+            self?.currentViewController?.addAnimationToNavController(isFromLeft: true)
+            self?.currentViewController?.navigationController?.pushViewController(vc, animated: true)
+        }
+    }
+    
+    func dismissFromPhotoDetails() {
+        DispatchQueue.main.async { [weak self] in
+            self?.currentViewController?.addAnimationToNavController(isFromLeft: false)
+            self?.currentViewController?.navigationController?.popViewController(animated: true)
+        }
+    }
+    
     func openURLExternally(url: URL) {
         DispatchQueue.main.async {
             if UIApplication.shared.canOpenURL(url) {

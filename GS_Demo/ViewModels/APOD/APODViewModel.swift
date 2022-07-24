@@ -29,6 +29,7 @@ protocol APODViewModelEntity: ViewModelOveservers,
     func setCurrentMode(mode: APODViewModelStete)
     func cleanupCache(completion: @escaping (() -> Void))
     func playVideo(url: URL)
+    func expandImage(postDetails: PictureDetails)
 }
 
 enum APODViewModelStete {
@@ -173,6 +174,10 @@ class APODViewModel: APODViewModelEntity {
     
     func playVideo(url: URL) {
         NavigationRouter.shared.openURLExternally(url: url)
+    }
+    
+    func expandImage(postDetails: PictureDetails) {
+        NavigationRouter.shared.navigateToPhotoDetails(photoDetails: postDetails)
     }
     
     private func processPost(post: PictureDetails) {

@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		EC665884288D3A07007E9501 /* PhotoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC665883288D3A07007E9501 /* PhotoViewController.swift */; };
+		EC665887288D3A22007E9501 /* PhotoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC665886288D3A22007E9501 /* PhotoViewModel.swift */; };
+		EC66588A288D3D34007E9501 /* GlobantConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC665889288D3D34007E9501 /* GlobantConstants.swift */; };
 		EC9977F8288846EE0035A79E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC9977F7288846EE0035A79E /* AppDelegate.swift */; };
 		EC997802288846EE0035A79E /* GS_Demo.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = EC997800288846EE0035A79E /* GS_Demo.xcdatamodeld */; };
 		EC997804288846EF0035A79E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EC997803288846EF0035A79E /* Assets.xcassets */; };
@@ -57,6 +60,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		EC665883288D3A07007E9501 /* PhotoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoViewController.swift; sourceTree = "<group>"; };
+		EC665886288D3A22007E9501 /* PhotoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoViewModel.swift; sourceTree = "<group>"; };
+		EC665889288D3D34007E9501 /* GlobantConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobantConstants.swift; sourceTree = "<group>"; };
 		EC9977F4288846EE0035A79E /* GS_Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GS_Demo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EC9977F7288846EE0035A79E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		EC997801288846EE0035A79E /* GS_Demo.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = GS_Demo.xcdatamodel; sourceTree = "<group>"; };
@@ -118,6 +124,31 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		EC665882288D39D1007E9501 /* PhotoViewController */ = {
+			isa = PBXGroup;
+			children = (
+				EC665883288D3A07007E9501 /* PhotoViewController.swift */,
+			);
+			path = PhotoViewController;
+			sourceTree = "<group>";
+		};
+		EC665885288D3A11007E9501 /* APOD */ = {
+			isa = PBXGroup;
+			children = (
+				EC997860288AA0970035A79E /* APODViewModel.swift */,
+				EC997862288AA2920035A79E /* APODCellViewModel.swift */,
+			);
+			path = APOD;
+			sourceTree = "<group>";
+		};
+		EC665888288D3A26007E9501 /* PhotoView */ = {
+			isa = PBXGroup;
+			children = (
+				EC665886288D3A22007E9501 /* PhotoViewModel.swift */,
+			);
+			path = PhotoView;
+			sourceTree = "<group>";
+		};
 		EC9977EB288846EE0035A79E = {
 			isa = PBXGroup;
 			children = (
@@ -177,6 +208,7 @@
 		EC99782A288848090035A79E /* VCs */ = {
 			isa = PBXGroup;
 			children = (
+				EC665882288D39D1007E9501 /* PhotoViewController */,
 				EC997864288ADB580035A79E /* APOD */,
 				EC997838288849D70035A79E /* BaseViewController.swift */,
 			);
@@ -186,8 +218,8 @@
 		EC99782B2888480F0035A79E /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
-				EC997860288AA0970035A79E /* APODViewModel.swift */,
-				EC997862288AA2920035A79E /* APODCellViewModel.swift */,
+				EC665888288D3A26007E9501 /* PhotoView */,
+				EC665885288D3A11007E9501 /* APOD */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -223,6 +255,7 @@
 			isa = PBXGroup;
 			children = (
 				EC99786D288C30F00035A79E /* Loader.swift */,
+				EC665889288D3D34007E9501 /* GlobantConstants.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -457,10 +490,12 @@
 				EC997859288966290035A79E /* CoreDataManager.swift in Sources */,
 				EC99784C28892A950035A79E /* Networking.swift in Sources */,
 				EC997868288AE3420035A79E /* DateSelectorView.swift in Sources */,
+				EC66588A288D3D34007E9501 /* GlobantConstants.swift in Sources */,
 				EC99785F28899F9E0035A79E /* Extensions.swift in Sources */,
 				EC997843288877360035A79E /* EndPoint+Paths.swift in Sources */,
 				EC997841288876D80035A79E /* EndPoint.swift in Sources */,
 				EC997861288AA0970035A79E /* APODViewModel.swift in Sources */,
+				EC665887288D3A22007E9501 /* PhotoViewModel.swift in Sources */,
 				EC99784A28892A870035A79E /* NetworkingConstants.swift in Sources */,
 				EC99785228895AA90035A79E /* GSApiServices+Constants.swift in Sources */,
 				EC99783D28884C5B0035A79E /* ImageDownloadManager.swift in Sources */,
@@ -473,6 +508,7 @@
 				EC997863288AA2920035A79E /* APODCellViewModel.swift in Sources */,
 				EC997837288849AD0035A79E /* APODViewController.swift in Sources */,
 				EC997802288846EE0035A79E /* GS_Demo.xcdatamodeld in Sources */,
+				EC665884288D3A07007E9501 /* PhotoViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

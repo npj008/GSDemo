@@ -85,3 +85,14 @@ extension UITextField {
         self.rightViewMode = .always
     }
 }
+
+extension UIViewController {
+
+    func addAnimationToNavController(duration: Double = 0.4, isFromLeft: Bool, transitionType: String = "flip") {
+        let transition = CATransition()
+        transition.duration = duration
+        transition.type = CATransitionType(rawValue: transitionType)
+        transition.subtype = isFromLeft ? .fromLeft : .fromRight
+        self.navigationController?.view.layer.add(transition, forKey: kCATransition)
+    }
+}

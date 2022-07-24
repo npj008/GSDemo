@@ -74,9 +74,15 @@ extension APODView : UITableViewDataSource,
             cell.photoPostCellViewModel = pictureDetails
             cell.selectionStyle = .none
             cell.delegate = self
+            
             cell.playVideo = { [weak self] videoURL in
                 self?.viewModel.playVideo(url: videoURL)
             }
+            
+            cell.expandImage = { [weak self] pictureDetails in
+                self?.viewModel.expandImage(postDetails: pictureDetails)
+            }
+            
             return cell
         default:
             return UITableViewCell()

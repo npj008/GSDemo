@@ -28,18 +28,13 @@ class APODCell: UITableViewCell {
     }
     
     var playVideo: ((URL) -> ())?
-    private let likeFilledImage = UIImage(named: "like")
-    private let likeEmptyImage = UIImage(named: "unlike")
-    private let loadingImage = UIImage(named: "loading")
-    private let placeholder = UIImage(named: "placeholder")
-    private let placeholderVideo = UIImage(named: "placeholderVideo")
-
+    var expandImage: ((PictureDetails) -> ())?
     
     lazy var likeButton: UIButton = {
         let btn = UIButton()
         btn.translatesAutoresizingMaskIntoConstraints = false
         btn.tag = 200
-        btn.setImage(likeEmptyImage, for: .normal)
+        btn.setImage(GlobalConstants.likeEmptyImage, for: .normal)
         btn.tintColor = .systemRed
         btn.addTarget(self, action: #selector(likeTapped), for: .touchUpInside)
         return btn
@@ -59,7 +54,7 @@ class APODCell: UITableViewCell {
     lazy var imgView: UIImageView = {
         let imgView = UIImageView()
         imgView.translatesAutoresizingMaskIntoConstraints = false
-        imgView.image = placeholder
+        imgView.image = GlobalConstants.placeholderImage
         imgView.contentMode = .scaleAspectFill
         return imgView
     }()
@@ -158,7 +153,6 @@ class APODCell: UITableViewCell {
         tapGesture.numberOfTapsRequired = 1
         tapGesture.numberOfTouchesRequired = 1
         imgView.addGestureRecognizer(tapGesture)
-        imgView.isUserInteractionEnabled = false
         
         imgView.addSubview(alphaView)
         alphaView.leadingAnchor.constraint(equalTo: imgView.leadingAnchor).isActive = true
@@ -203,7 +197,7 @@ class APODCell: UITableViewCell {
         }
         
         let isFavorite = sender.tag == 100
-        sender.setImage(loadingImage, for: .normal)
+        sender.setImage(GlobalConstants.loadingImage, for: .normal)
         delegate?.toggleFavorite(isFavorite: !isFavorite,
                                  postDetail: vm.post) { [weak self] success in
             if !success {
@@ -219,7 +213,15 @@ class APODCell: UITableViewCell {
     }
     
     @objc func imageTapped(_ sender: UITapGestureRecognizer) {
-        self.processVideoPlay()
+        guard let vm = photoPostCellViewModel else { return }
+        switch vm.type {
+        case .photoCell:
+            expandImage?(vm.post)
+        case .videoCell:
+            self.processVideoPlay()
+        case .otherCell:
+            break
+        }
     }
     
     private func processVideoPlay() {
@@ -247,7 +249,6 @@ class APODCell: UITableViewCell {
     
     private func setupContent() {
         playVideoButton.isHidden = true
-        imgView.isUserInteractionEnabled = false
         if photoPostCellViewModel?.type == .photoCell {
             spinner.startAnimating()
             imgView.alpha = 0.2
@@ -259,8 +260,7 @@ class APODCell: UITableViewCell {
                 }
             })
         } else {
-            imgView.isUserInteractionEnabled = true
-            imgView.image = placeholderVideo
+            imgView.image = GlobalConstants.placeholderVideo
             playVideoButton.isHidden = false
         }
         
@@ -277,11 +277,11 @@ class APODCell: UITableViewCell {
     private func setButton(isFavorite: Bool) {
         if isFavorite {
             likeButton.tag = 100
-            likeButton.setImage(self.likeFilledImage, for: .normal)
+            likeButton.setImage(GlobalConstants.likeFilledImage, for: .normal)
 
         } else {
             likeButton.tag = 200
-            likeButton.setImage(self.likeEmptyImage, for: .normal)
+            likeButton.setImage(GlobalConstants.likeEmptyImage, for: .normal)
         }
     }
 }
